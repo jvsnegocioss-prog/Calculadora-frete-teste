@@ -1,0 +1,24 @@
+CALCULADORA DE FRETE — PACOTE DE TESTE v0.8
+
+CONTÉM: index.html completo, sw.js, manifest.webmanifest e ícones.
+
+IMPORTANTE
+- Envie estes arquivos somente para o repositório Calculadora-frete-teste. Não envie para o repositório publicado.
+- Este pacote corrige duas inconsistências: impede mostrar piso ANTT de Carga Geral quando outra carga é selecionada e não inclui frete de retorno no faturamento quando a situação está como retorno vazio.
+- O painel ANTT continua com coeficientes cadastrados somente para Carga Geral. Para os outros 11 tipos de carga, o cálculo é bloqueado para não apresentar valores potencialmente incorretos.
+- Antes de usar em contratação, confirme os coeficientes vigentes diretamente na norma oficial da ANTT. Este pacote é de teste e não constitui validação legal.
+
+COMO PUBLICAR NO TESTE PELO IPHONE
+1. Baixe o ZIP e abra-o no app Arquivos.
+2. No GitHub, abra o repositório Calculadora-frete-teste.
+3. Faça upload/substituição de index.html, sw.js, manifest.webmanifest, icon-192.png e icon-512.png.
+4. Confirme em Commit changes.
+5. Aguarde o GitHub Pages publicar e abra a URL do repositório de teste.
+6. Se aparecer a versão antiga, feche a página e abra novamente; o cache do app foi separado para esta versão de teste.
+
+TESTES RECOMENDADOS
+- Carga geral + operação convencional: confirme que o piso é exibido para a combinação com coeficiente cadastrado.
+- Selecione Granel sólido ou outra carga: o piso deve ficar indisponível, sem reaproveitar coeficientes de Carga Geral.
+- Selecione retorno vazio e coloque um valor no campo frete de volta: esse valor não deve entrar no faturamento.
+- Mude para retorno carregado, informe frete de volta e confira se o valor entra no faturamento.
+- Confira custos, lucro, custo/km, meta de frete e resultado por hora.
