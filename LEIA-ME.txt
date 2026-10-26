@@ -1,26 +1,23 @@
-CALCULADORA DE FRETE — TESTE COM MAPA
-Pacote de teste, não publicado automaticamente.
+Calculadora de Frete — versão de teste com sugestões automáticas e limpeza de endereço
 
-Arquivos:
-- index.html: calculadora e seletor de mapa
-- manifest.webmanifest: instalação PWA
-- sw.js: cache dos arquivos locais do aplicativo
-- icon-192.png e icon-512.png: ícones
+Conteúdo:
+- index.html: calculadora e seletor de mapa.
+- manifest.webmanifest e ícones: instalação PWA.
+- sw.js: cache atualizado.
 
-Como testar:
-1. Publique os arquivos no repositório de teste, substituindo os arquivos de mesmo nome.
-2. Abra o endereço de teste e recarregue a página.
-3. Em Dados do frete, escolha a partida e confirme.
-4. Escolha o destino e confirme.
-5. Confira se as distâncias de ida e retorno são preenchidas.
-6. Verifique os resultados e os dados salvos.
+Novidades:
+- Sugestões automáticas de endereço após digitar pelo menos 3 caracteres.
+- Toque em uma sugestão para posicionar o mapa no local.
+- Botão “✕ Limpar” apaga o texto da busca e o ponto temporário escolhido para que seja possível pesquisar outro endereço.
+- “Buscar” continua disponível como alternativa.
+- A confirmação “OK — confirmar local” continua necessária.
+
+Como publicar:
+1. No repositório de teste do GitHub Pages, substitua os arquivos pelos deste pacote.
+2. Aguarde a publicação.
+3. Abra o site e teste em uma aba privada se o navegador continuar mostrando a versão antiga.
 
 Limitações:
-- Mapa, busca e rotas precisam de internet.
-- Usa serviços públicos OpenStreetMap/Nominatim/OSRM, que podem ter limites ou indisponibilidade.
-- O roteamento é genérico e não verifica restrições específicas para caminhões (peso, altura, largura, comprimento, eixos ou pontes).
-- Se falhar, preencha a quilometragem manualmente.
-- Coeficientes ANTT ainda precisam de validação oficial.
-
-
-Atualização de sugestões automáticas: ao digitar pelo menos 3 caracteres no campo de endereço, aguarde um instante para aparecer uma lista de até 5 opções. Toque na opção correta para marcar o local e depois confirme em OK. O serviço público pode limitar consultas; use Buscar ou marque diretamente no mapa se as sugestões não aparecerem.
+- Sugestões e mapa dependem de internet e de serviços públicos (Nominatim/OpenStreetMap/OSRM), sujeitos a limites e indisponibilidade.
+- O cálculo de rota é genérico e não considera restrições específicas para caminhões (altura, peso, largura, eixos, pontes ou vias proibidas).
+- O pacote foi verificado por sintaxe; não houve teste em navegador real.
