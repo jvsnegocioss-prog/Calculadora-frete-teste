@@ -36,7 +36,7 @@
     <section class="card">
       <h2><span class="num">1</span> Dados do frete</h2>
       <div class="fields">
-        <div class="field full"><label for="vehicle">Veículo / configuração</label><select id="vehicle"><option>Carreta LS</option><option>Bitrem</option><option>Rodotrem</option><option>Truck</option><option>Toco</option><option>Outro</option></select></div>
+        <div class="field full"><label for="vehicle">Veículo / configuração</label><select id="vehicle"><option>Fiorino</option><option>Van pequena</option><option>Van grande</option><option>Carro utilitário</option><option>Moto</option><option>VUC / 3/4</option><option>Toco</option><option>Truck</option><option>Carreta / LS</option><option>Bitrem</option><option>Rodotrem</option><option>Outro veículo</option></select></div>
         <div class="field"><label for="freight">Valor do frete de ida (R$)</label><input id="freight" type="number" min="0" step="0.01" value="10000"></div>
         <div class="field"><label for="loadType">Tipo de carga</label><select id="loadType">
 <option value="Carga Geral">Carga geral</option>
@@ -52,9 +52,8 @@
 <option value="Perigosa (carga geral)">Perigosa (carga geral)</option>
 <option value="Carga Granel Pressurizada">Carga granel pressurizada</option>
 </select></div>
-        <div class="field"><label for="outKm">Distância de ida (km)</label><input id="outKm" type="number" min="0" step="1" value="800"></div>
+        <div class="field full"><label>Calcular rota por origem e destino</label><div class="fields"><div class="field"><label for="routeOrigin">Local de partida</label><input id="routeOrigin" placeholder="Cidade, endereço ou CEP"></div><div class="field"><label for="routeDestination">Destino</label><input id="routeDestination" placeholder="Cidade, endereço ou CEP"></div></div><div class="actions"><button type="button" class="btn2" id="openRoute">Abrir rota no Google Maps</button></div><p class="hint">O Maps abrirá a rota adequada disponível. Por enquanto, confirme a quilometragem exibida e informe-a no campo de distância; cálculo automático de rota para caminhões exige integração própria.</p></div><div class="field"><label for="outKm">Distância de ida (km)</label><input id="outKm" type="number" min="0" step="1" value="800"></div>
         <div class="field"><label for="backKm">Distância de retorno (km)</label><input id="backKm" type="number" min="0" step="1" value="800"></div>
-        <div class="field full"><label>Quais trechos o cliente está pagando?</label><div style="display:flex;gap:18px;flex-wrap:wrap;margin-top:8px"><label style="font-weight:normal"><input type="checkbox" id="paidOutbound" checked style="width:auto;min-width:auto"> Frete de ida</label><label style="font-weight:normal"><input type="checkbox" id="paidReturn" style="width:auto;min-width:auto"> Frete de volta</label></div><p class="hint">Marque cada trecho que tem pagamento de frete. O piso será conferido separadamente para cada trecho marcado.</p></div>
         <div class="field full"><label for="returnType">Situação do retorno</label><select id="returnType"><option value="empty">Vazio / sem frete de retorno</option><option value="loaded">Carregado com frete de retorno</option><option value="partial">Retorno parcial com frete</option></select><p class="hint" id="returnHint">O custo da distância de retorno é considerado mesmo sem faturamento de volta.</p></div>
         <div class="field"><label for="returnFreight">Valor do frete de volta (R$)</label><input id="returnFreight" type="number" min="0" step="0.01" value="0"></div>
         <div class="field"><label for="hours">Tempo total (horas)</label><input id="hours" type="number" min="0" step="0.5" value="30"></div>
@@ -123,6 +122,7 @@
 <strong>Conferência do piso mínimo da ANTT</strong>
 <p>Escolha o conjunto usado nesta viagem, os eixos carregados e a classificação da operação. A calculadora seleciona a tabela conforme o tipo de contratação.</p>
 <div class="fields" style="margin-top:12px">
+<div class="field full"><label>Quais trechos o cliente está pagando?</label><div style="display:flex;gap:18px;flex-wrap:wrap;margin-top:8px"><label style="font-weight:normal"><input type="checkbox" id="paidOutbound" checked style="width:auto;min-width:auto"> Frete de ida</label><label style="font-weight:normal"><input type="checkbox" id="paidReturn" style="width:auto;min-width:auto"> Frete de volta</label></div><p class="hint">Marque cada trecho que tem pagamento de frete. O piso será conferido separadamente para cada trecho marcado.</p></div>
 <div class="field full"><label for="anttVehicleType">Conjunto contratado</label>
 <select id="anttVehicleType"><option value="complete">Cavalo mecânico + semirreboque (conjunto completo)</option><option value="traction">Somente cavalo mecânico (unidade de tração)</option></select></div>
 <div class="field"><label for="anttAxles">Eixos carregados</label>
@@ -146,20 +146,24 @@
     </section>
   </div>
 </main>
-<footer>Calculadora de Frete • versão 0.7 • configurações salvas neste dispositivo</footer>
+<footer>Calculadora de Frete • versão 1.0 • teste • configurações salvas neste dispositivo</footer>
 <script>
-const storageKey='calculadoraFreteConfigV07';
-const defaults={vehicle:'Carreta LS',freight:10000,loadType:'Carga Geral',outKm:800,backKm:800,returnType:'empty',returnFreight:0,hours:30,consumption:2.5,diesel:6.2,arla:150,toll:800,maintenance:0.63,trip:250,otherVariable:0,monthlyFinancing:4000,monthlyInsurance:500,monthlyTracking:150,monthlyAnnualFees:350,monthlyDriver:800,monthlyOtherFixed:200,fixedMonthly:6000,monthlyKm:10000,taxPercent:0,margin:20};
+const storageKey='calculadoraFreteConfigV10_TESTE';
+const profilesKey='calculadoraFretePerfisV10_TESTE';
+const defaults={vehicle:'Carreta / LS',freight:10000,loadType:'Carga Geral',outKm:800,backKm:800,returnType:'empty',returnFreight:0,hours:30,consumption:2.5,diesel:6.2,arla:150,toll:800,maintenance:0.63,trip:250,otherVariable:0,monthlyFinancing:4000,monthlyInsurance:500,monthlyTracking:150,monthlyAnnualFees:350,monthlyDriver:800,monthlyOtherFixed:200,fixedMonthly:6000,monthlyKm:10000,taxPercent:0,margin:20};
 const ids=Object.keys(defaults);
 const $=id=>document.getElementById(id);
 const num=id=>Math.max(0,Number($(id).value)||0);
 const money=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(Number.isFinite(n)?n:0);
 const pct=n=>new Intl.NumberFormat('pt-BR',{maximumFractionDigits:1}).format(Number.isFinite(n)?n:0)+'%';
 function totalFixedCosts(){const total=['monthlyFinancing','monthlyInsurance','monthlyTracking','monthlyAnnualFees','monthlyDriver','monthlyOtherFixed'].reduce((sum,id)=>sum+num(id),0);$('fixedMonthly').value=total.toFixed(2);return total;}
-function saveSettings(){try{const data={};ids.forEach(id=>{data[id]=$(id).value});data.operationType=$('operationType').value;data.anttVehicleType=$('anttVehicleType').value;data.anttAxles=$('anttAxles').value;data.paidOutbound=$('paidOutbound').checked;data.paidReturn=$('paidReturn').checked;localStorage.setItem(storageKey,JSON.stringify(data));$('saveStatus').textContent='✓ Dados salvos neste aparelho. Você pode editá-los quando precisar.';}catch(e){$('saveStatus').textContent='Não foi possível salvar neste navegador. Verifique as configurações de privacidade.';}}
-function loadSettings(){try{const saved=JSON.parse(localStorage.getItem(storageKey)||'null');const values={...defaults,...(saved&&typeof saved==='object'?saved:{})};Object.entries(values).forEach(([id,value])=>{if($(id))$(id).value=value;});$('operationType').value=(saved&&saved.operationType)||'unknown';$('anttVehicleType').value=(saved&&saved.anttVehicleType)||'complete';$('anttAxles').value=(saved&&saved.anttAxles)||'5';$('paidOutbound').checked=saved&&saved.paidOutbound!==undefined?saved.paidOutbound:true;$('paidReturn').checked=saved&&saved.paidReturn!==undefined?saved.paidReturn:false;}catch(e){Object.entries(defaults).forEach(([id,value])=>{if($(id))$(id).value=value;});}totalFixedCosts();}
+function collectSettings(){const data={};ids.forEach(id=>{data[id]=$(id).value});data.operationType=$('operationType').value;data.anttVehicleType=$('anttVehicleType').value;data.anttAxles=$('anttAxles').value;data.paidOutbound=$('paidOutbound').checked;data.paidReturn=$('paidReturn').checked;data.routeOrigin=$('routeOrigin').value;data.routeDestination=$('routeDestination').value;return data;}
+function saveSettings(){try{const data=collectSettings();localStorage.setItem(storageKey,JSON.stringify(data));let profiles=JSON.parse(localStorage.getItem(profilesKey)||'{}');profiles[$('vehicle').value]=data;localStorage.setItem(profilesKey,JSON.stringify(profiles));$('saveStatus').textContent='✓ Configuração de '+$('vehicle').value+' salva neste aparelho.';}catch(e){$('saveStatus').textContent='Não foi possível salvar neste navegador. Verifique as configurações de privacidade.';}}
+function applySettings(saved){const values={...defaults,...(saved&&typeof saved==='object'?saved:{})};Object.entries(values).forEach(([id,value])=>{if($(id))$(id).value=value;});$('operationType').value=(saved&&saved.operationType)||'unknown';$('anttVehicleType').value=(saved&&saved.anttVehicleType)||'complete';$('anttAxles').value=(saved&&saved.anttAxles)||'5';$('paidOutbound').checked=saved&&saved.paidOutbound!==undefined?saved.paidOutbound:true;$('paidReturn').checked=saved&&saved.paidReturn!==undefined?saved.paidReturn:false;if($('routeOrigin'))$('routeOrigin').value=(saved&&saved.routeOrigin)||'';if($('routeDestination'))$('routeDestination').value=(saved&&saved.routeDestination)||'';totalFixedCosts();}
+function loadSettings(){try{const profiles=JSON.parse(localStorage.getItem(profilesKey)||'{}');const legacy=JSON.parse(localStorage.getItem(storageKey)||'null');const vehicle=$('vehicle').value;applySettings(profiles[vehicle]||legacy||defaults);}catch(e){applySettings(defaults);}}
+function switchVehicle(){try{const profiles=JSON.parse(localStorage.getItem(profilesKey)||'{}');const saved=profiles[$('vehicle').value];if(saved){applySettings(saved);}else{const d={...defaults,vehicle:$('vehicle').value};if(['Moto'].includes(d.vehicle)){d.consumption=30;d.maintenance=0.12;d.arla=0;d.monthlyFinancing=800;d.monthlyInsurance=100;d.monthlyTracking=0;d.monthlyAnnualFees=50;d.monthlyDriver=0;d.monthlyOtherFixed=100;d.monthlyKm=2500;d.toll=0;d.trip=50;}else if(['Fiorino','Van pequena','Carro utilitário'].includes(d.vehicle)){d.consumption=10;d.maintenance=0.25;d.arla=0;d.monthlyFinancing=1800;d.monthlyInsurance=250;d.monthlyTracking=50;d.monthlyAnnualFees=120;d.monthlyDriver=500;d.monthlyOtherFixed=150;d.monthlyKm=4000;d.toll=0;d.trip=100;}else if(['Van grande','VUC / 3/4'].includes(d.vehicle)){d.consumption=7;d.maintenance=0.38;d.arla=30;d.monthlyFinancing=2800;d.monthlyInsurance=350;d.monthlyTracking=80;d.monthlyAnnualFees=200;d.monthlyDriver=700;d.monthlyOtherFixed=180;d.monthlyKm=6000;d.toll=100;d.trip=150;}else if(['Toco','Truck'].includes(d.vehicle)){d.consumption=4;d.maintenance=0.48;d.arla=80;d.monthlyFinancing=3500;d.monthlyInsurance=450;d.monthlyTracking=120;d.monthlyAnnualFees=280;d.monthlyDriver=800;d.monthlyOtherFixed=200;d.monthlyKm=8000;d.toll=250;d.trip=200;}else{d.consumption=2.5;d.maintenance=0.63;d.arla=150;d.monthlyFinancing=4000;d.monthlyInsurance=500;d.monthlyTracking=150;d.monthlyAnnualFees=350;d.monthlyDriver=800;d.monthlyOtherFixed=200;d.monthlyKm=10000;d.toll=800;d.trip=250;}applySettings(d);saveSettings();}}catch(e){applySettings(defaults);}calc();calcAntt();}
 function calc(){
- const km=num('outKm')+num('backKm'), freight=num('freight')+num('returnFreight');
+ const km=num('outKm')+num('backKm'), freight=num('freight')+($('returnType').value==='empty'?0:num('returnFreight'));
  const litres=num('consumption')>0?km/num('consumption'):0;
  const fuel=litres*num('diesel'), maint=km*num('maintenance');
  const fixedPerKm=num('monthlyKm')>0?num('fixedMonthly')/num('monthlyKm'):0;
@@ -194,9 +198,13 @@ const anttGeneralCargo = {
 function calcAntt(){
  const vehicle=$('anttVehicleType').value, axle=Number($('anttAxles').value), op=$('operationType').value;
  const outKm=num('outKm'), backKm=num('backKm'), outFreight=num('freight'), backFreight=num('returnFreight'), status=$('anttStatus');
- const paidOut=$('paidOutbound').checked, paidBack=$('paidReturn').checked;
+ const paidOut=$('paidOutbound').checked, paidBack=$('paidReturn').checked && $('returnType').value!=='empty';
  const vehicleLabel=vehicle==='complete'?'conjunto completo':'somente unidade de tração';
  $('anttDistance').textContent=new Intl.NumberFormat('pt-BR').format(outKm)+' km / '+new Intl.NumberFormat('pt-BR').format(backKm)+' km';
+ if($('loadType').value!=='Carga Geral'){
+  $('anttTable').textContent='Não disponível';$('anttFloor').textContent='—';$('anttCompare').textContent='—';$('anttReturnFloor').textContent='—';$('anttReturnCompare').textContent='—';$('anttTotalFloor').textContent='—';
+  status.className='status warn';status.textContent='Piso não calculado: este teste possui coeficientes cadastrados somente para Carga Geral. Para esta categoria, confirme a tabela oficial vigente antes de usar o valor em uma contratação.';return;
+ }
  if(op==='unknown'){
   $('anttTable').textContent='Pendente';$('anttFloor').textContent='—';$('anttCompare').textContent='—';$('anttReturnFloor').textContent='—';$('anttReturnCompare').textContent='—';$('anttTotalFloor').textContent='—';
   status.className='status warn';status.textContent='Não calculado: confirme se a operação é convencional ou de alto desempenho.';return;
@@ -224,12 +232,14 @@ function calcAntt(){
 }
 function updateAndSave(){totalFixedCosts();calc();calcAntt();saveSettings();}
 loadSettings();
+$('vehicle').addEventListener('change',switchVehicle);
+$('openRoute').addEventListener('click',()=>{const a=$('routeOrigin').value.trim(),b=$('routeDestination').value.trim();if(!a||!b){alert('Informe o local de partida e o destino.');return;}const url='https://www.google.com/maps/dir/?api=1&origin='+encodeURIComponent(a)+'&destination='+encodeURIComponent(b)+'&travelmode=driving';window.open(url,'_blank','noopener');});
 ids.filter(id=>id!=='fixedMonthly').forEach(id=>$(id).addEventListener('input',updateAndSave));['paidOutbound','paidReturn'].forEach(id=>$(id).addEventListener('change',updateAndSave));
 document.querySelectorAll('[data-fixed-cost]').forEach(el=>el.addEventListener('input',updateAndSave));
 $('recalc').addEventListener('click',()=>{totalFixedCosts();calc();calcAntt();saveSettings();});
 $('reset').addEventListener('click',()=>{Object.entries(defaults).forEach(([id,value])=>$(id).value=value);$('operationType').value='unknown';$('anttVehicleType').value='complete';$('anttAxles').value='5';$('paidOutbound').checked=true;$('paidReturn').checked=false;totalFixedCosts();calc();calcAntt();saveSettings();});
-$('clearSaved').addEventListener('click',()=>{if(confirm('Apagar os dados salvos neste aparelho e restaurar os valores de exemplo?')){try{localStorage.removeItem(storageKey);}catch(e){}Object.entries(defaults).forEach(([id,value])=>$(id).value=value);$('operationType').value='unknown';$('anttVehicleType').value='complete';$('anttAxles').value='5';$('paidOutbound').checked=true;$('paidReturn').checked=false;totalFixedCosts();calc();calcAntt();saveSettings();$('saveStatus').textContent='Dados anteriores apagados; valores de exemplo salvos novamente.';}});
-$('share').addEventListener('click',async()=>{const summary=`Calculadora de Frete\nFaturamento bruto total: ${$('revenue').textContent}\nFrete de ida: ${money(num('freight'))}\nFrete de retorno: ${money(num('returnFreight'))}\nDistância total: ${$('totalKm').textContent}\nCustos estimados: ${$('totalCost').textContent}\nResultado estimado: ${$('profit').textContent}\nCusto/km: ${$('cpk').textContent}\nMargem: ${$('actualMargin').textContent}\nPiso ANTT exibido: ${$('anttFloor').textContent}; confirme a classificação.`;try{if(navigator.share)await navigator.share({title:'Resumo do frete',text:summary});else{await navigator.clipboard.writeText(summary);alert('Resumo copiado.')}}catch(e){}});
+$('clearSaved').addEventListener('click',()=>{if(confirm('Apagar os dados salvos neste aparelho e restaurar os valores de exemplo?')){try{localStorage.removeItem(storageKey);localStorage.removeItem(profilesKey);}catch(e){}Object.entries(defaults).forEach(([id,value])=>$(id).value=value);$('operationType').value='unknown';$('anttVehicleType').value='complete';$('anttAxles').value='5';$('paidOutbound').checked=true;$('paidReturn').checked=false;$('routeOrigin').value='';$('routeDestination').value='';totalFixedCosts();calc();calcAntt();saveSettings();$('saveStatus').textContent='Perfis apagados; valores de exemplo salvos novamente.';}});
+$('share').addEventListener('click',async()=>{const summary=`Calculadora de Frete — veículo: ${$('vehicle').value}\nFaturamento bruto total: ${$('revenue').textContent}\nFrete de ida: ${money(num('freight'))}\nFrete de retorno considerado: ${money($('returnType').value==='empty'?0:num('returnFreight'))}\nDistância total: ${$('totalKm').textContent}\nCustos estimados: ${$('totalCost').textContent}\nResultado estimado: ${$('profit').textContent}\nCusto/km: ${$('cpk').textContent}\nMargem: ${$('actualMargin').textContent}\nPiso ANTT exibido: ${$('anttFloor').textContent}; confirme a classificação.`;try{if(navigator.share)await navigator.share({title:'Resumo do frete',text:summary});else{await navigator.clipboard.writeText(summary);alert('Resumo copiado.')}}catch(e){}});
 calc();
 calcAntt();
 $('operationType').addEventListener('change',()=>{calcAntt();saveSettings();});$('anttVehicleType').addEventListener('change',()=>{calcAntt();saveSettings();});$('anttAxles').addEventListener('change',()=>{calcAntt();saveSettings();});
