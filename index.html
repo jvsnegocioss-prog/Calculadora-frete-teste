@@ -27,6 +27,16 @@
         .map-modal{display:none;position:fixed;inset:0;z-index:9999;background:#102a43b8;padding:12px;align-items:center;justify-content:center}.map-modal.open{display:flex}.map-panel{background:#fff;border-radius:16px;width:min(900px,100%);max-height:96dvh;overflow:auto;padding:14px}.map-panel h2{margin:0 0 10px;font-size:18px}.map-search{display:flex;gap:8px;margin-bottom:10px}.map-search input{flex:1;min-width:0}.map-search button{white-space:nowrap}.map-canvas{height:min(52dvh,460px);min-height:280px;border-radius:12px;border:1px solid var(--line);z-index:1}.map-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.map-status{font-size:12px;color:var(--muted);margin:8px 0}.route-pick{width:100%;text-align:left;background:#eaf3f7;color:var(--navy)}
     @media(min-width:760px){header{padding:30px 24px 34px}h1{font-size:30px}main{padding:24px}.grid{grid-template-columns:1fr 1fr}.results{grid-template-columns:1fr 1fr}.card.results-card{grid-column:1/-1}.card.results-card .results{grid-template-columns:repeat(4,1fr)}}
   </style>
+
+<style>
+.map-btn{appearance:none;-webkit-appearance:none;display:block;width:100%;text-align:left;background:#176b87!important;color:#fff!important;border:0;border-radius:12px;padding:14px 16px;font:inherit;font-weight:750;cursor:pointer;pointer-events:auto;position:relative;z-index:2}
+.map-modal{display:none;position:fixed;inset:0;z-index:99999;background:rgba(16,42,67,.72);padding:12px;align-items:center;justify-content:center}
+.map-modal.open{display:flex!important}
+.map-dialog{background:#fff;border-radius:16px;padding:14px;width:min(760px,100%);max-height:94vh;overflow:auto}
+#routeMap{height:48vh;min-height:280px;border-radius:12px;border:1px solid #dce5ea;margin:10px 0}
+.map-search{display:flex;gap:8px}.map-search input{flex:1;min-width:0}
+</style>
+
 </head>
 <body>
 <header><div class="wrap">
@@ -331,8 +341,10 @@ async function v09CalculateMapRoutes(){
  v09MapStatus("Distâncias preenchidas: ida "+out.toFixed(1)+" km e retorno "+back.toFixed(1)+" km. Confira a rota antes de viajar.");
  }catch(e){v09MapStatus("Não foi possível calcular automaticamente. Preencha as distâncias manualmente.");}
 }
-v09MapEl("chooseOrigin").addEventListener("click",()=>v09OpenMapPicker("origin"));
-v09MapEl("chooseDestination").addEventListener("click",()=>v09OpenMapPicker("destination"));
+const v09OriginButton=v09MapEl("chooseOrigin");
+const v09DestinationButton=v09MapEl("chooseDestination");
+if(v09OriginButton) v09OriginButton.addEventListener("click",()=>v09OpenMapPicker("origin"));
+if(v09DestinationButton) v09DestinationButton.addEventListener("click",()=>v09OpenMapPicker("destination"));
 v09MapEl("searchMap").addEventListener("click",v09SearchMapLocation);
 v09MapEl("mapQuery").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();v09SearchMapLocation();}});
 v09MapEl("cancelMap").addEventListener("click",v09CloseMapPicker);
