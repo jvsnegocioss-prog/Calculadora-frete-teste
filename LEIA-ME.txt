@@ -21,3 +21,6 @@ Limitações:
 - O roteamento é genérico e não verifica restrições específicas para caminhões (peso, altura, largura, comprimento, eixos ou pontes).
 - Se falhar, preencha a quilometragem manualmente.
 - Coeficientes ANTT ainda precisam de validação oficial.
+
+
+Atualização de sugestões automáticas: ao digitar pelo menos 3 caracteres no campo de endereço, aguarde um instante para aparecer uma lista de até 5 opções. Toque na opção correta para marcar o local e depois confirme em OK. O serviço público pode limitar consultas; use Buscar ou marque diretamente no mapa se as sugestões não aparecerem.
