@@ -23,3 +23,10 @@ PARA TESTAR
 3. Confira as distâncias calculadas e compare com uma rota conhecida.
 4. Se o serviço falhar, digite os quilômetros manualmente.
 5. Não substitua a versão publicada até concluir os testes.
+
+
+CORREÇÃO DE ORGANIZAÇÃO
+- A seleção dos trechos pagos pelo cliente deve aparecer exclusivamente em Dados do frete.
+- O painel da ANTT deve apenas ler essa seleção para realizar a comparação do piso, sem exibir uma segunda seleção.
+- O nome do cache do service worker foi atualizado para forçar a troca do cache anterior.
+- Confirme no ambiente de teste após publicar; não publique sobre a versão oficial antes de validar.
