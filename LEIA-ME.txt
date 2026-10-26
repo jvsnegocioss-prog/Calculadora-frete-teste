@@ -1,28 +1,25 @@
-CALCULADORA DE FRETE — VERSÃO 1.1 MAPA (TESTE)
+CALCULADORA DE FRETE — VERSÃO DE TESTE COM MAPA
 
-Esta versão é destinada a testes e não altera a versão de produção.
+Base: arquivos da versão enviada pelo usuário (HTML com custos e conferência ANTT), preservando o foco em caminhões.
 
-NOVIDADES
-- Botões para escolher origem e destino em um mapa dentro da calculadora.
+NOVO NESTA VERSÃO
+- Seleção de origem e destino em mapa interativo.
 - Pesquisa de endereço/cidade/CEP e seleção por toque no mapa.
-- Ao confirmar os dois pontos, busca a distância de ida e a rota independente de retorno.
-- As distâncias preenchem os campos de km e atualizam os cálculos de custo e resultado.
-- Endereços e coordenadas ficam salvos no perfil do veículo neste aparelho.
+- Ao confirmar ambos os pontos, tenta preencher as distâncias de ida e retorno usando o serviço público OSRM.
+- Guarda os pontos selecionados localmente neste navegador.
+- Mantém os campos de km editáveis para preenchimento manual se o serviço não responder.
 
-LIMITAÇÕES IMPORTANTES
-- O mapa usa Leaflet e mapas OpenStreetMap; pesquisa usa Nominatim; cálculo de rota usa o serviço público de demonstração OSRM.
-- Esses serviços públicos podem ter limites, indisponibilidade ou regras de uso; não há garantia de disponibilidade para uso comercial intenso. Se necessário, substitua por um provedor contratado.
-- A rota calculada é uma rota rodoviária genérica para carros, NÃO uma rota validada para caminhões. Não considera garantidamente altura, peso, largura, restrições de eixos, pontes, vias proibidas ou restrições específicas por veículo. Confira a rota antes de viajar.
-- Se a consulta falhar, informe os quilômetros manualmente. A distância de ida e retorno são calculadas separadamente.
-- Requer internet para carregar mapa, pesquisar locais e calcular rotas.
-- Custos por veículo são valores de exemplo, não recomendações financeiras.
-- O painel ANTT continua sujeito à conferência; não considerar este app como confirmação de conformidade legal.
+IMPORTANTE
+- Esta é uma versão de teste; não foi publicada no GitHub Pages e não altera a versão em produção.
+- O mapa depende de internet e de bibliotecas/serviços externos (Leaflet, OpenStreetMap, Nominatim e OSRM público). Eles podem limitar ou indisponibilizar consultas.
+- O roteamento OSRM público é genérico para veículos de passeio e NÃO garante rota adequada para caminhões. Não verifica altura, peso, largura, comprimento, eixos, pontes ou restrições locais. Confira a rota antes de viajar.
+- A distância de retorno é consultada separadamente, no sentido destino → origem; pode diferir da ida.
+- O módulo ANTT e os coeficientes recebidos foram preservados como estavam no arquivo-base; não foram verificados oficialmente nesta atualização.
+- Os dados de custos são salvos no aparelho/navegador. Limpar os dados do site pode apagá-los.
 
-INSTALAÇÃO / TESTE
-1. Extraia todos os arquivos mantendo-os na mesma pasta.
-2. Publique somente no repositório de teste, não no de produção.
-3. Abra o site de teste com internet, escolha origem e destino e confirme ambos.
-4. Verifique se os km de ida e volta foram atualizados e se os resultados mudaram.
-5. Teste também troca de veículo, salvamento e reabertura do app.
-
-Esta entrega contém arquivos preparados localmente. Ela não foi enviada ao GitHub nem publicada automaticamente.
+PARA TESTAR
+1. Publique estes arquivos apenas em um repositório/ambiente de teste.
+2. Abra o site com internet, escolha partida e destino e confirme cada um.
+3. Confira as distâncias calculadas e compare com uma rota conhecida.
+4. Se o serviço falhar, digite os quilômetros manualmente.
+5. Não substitua a versão publicada até concluir os testes.
