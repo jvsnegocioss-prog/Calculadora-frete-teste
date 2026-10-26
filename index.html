@@ -9,6 +9,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon-192.png">
   <title>Calculadora de Frete</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
   <style>
     :root{color-scheme:light;--navy:#102a43;--blue:#176b87;--cyan:#d9f0f4;--bg:#f3f6f8;--card:#fff;--ink:#172b3a;--muted:#617586;--line:#dce5ea;--green:#16794b;--amber:#a55a08;--red:#b42318}
     *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
@@ -23,6 +24,7 @@
     .results{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{background:#f5f8fa;border:1px solid var(--line);padding:13px;border-radius:13px;min-width:0}.metric .label{font-size:12px;color:var(--muted);font-weight:650}.metric strong{display:block;font-size:21px;letter-spacing:-.5px;margin-top:5px;overflow-wrap:anywhere}.metric.primary{background:var(--navy);color:white;border-color:var(--navy)}.metric.primary .label{color:#d5e4ed}.metric.primary strong{font-size:25px}.status{padding:12px 13px;border-radius:12px;font-size:13px;font-weight:700;margin-top:12px;background:#edf2f5;color:#445967}.status.good{background:#e5f5eb;color:var(--green)}.status.warn{background:#fff2df;color:var(--amber)}.status.bad{background:#fde9e7;color:var(--red)}
     .note{font-size:12px;color:var(--muted);margin:12px 0 0}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}button{border:0;border-radius:11px;padding:12px 15px;font:inherit;font-size:14px;font-weight:750;cursor:pointer}.btn{background:var(--blue);color:white}.btn2{background:#e8eef2;color:var(--navy)}footer{font-size:12px;color:var(--muted);padding:0 14px 28px;text-align:center}
     .section-intro{font-size:13px;color:var(--muted);margin:-7px 0 14px}.wide-result{margin-top:14px}.antt{border:1px dashed #a7bac6;background:#f7fafb;border-radius:13px;padding:13px;margin-top:12px}.antt strong{font-size:13px}.antt p{font-size:12px;color:var(--muted);margin:5px 0 0}.breakdown{margin-top:14px;border:1px solid var(--line);border-radius:13px;overflow:hidden}.breakdown h3{font-size:14px;margin:0;padding:12px;background:#f5f8fa}.cost-row{display:flex;justify-content:space-between;gap:12px;padding:9px 12px;border-top:1px solid var(--line);font-size:13px}.cost-row span:first-child{color:var(--muted)}.cost-row strong{text-align:right;white-space:nowrap}.cost-row.total{background:#eef4f7;font-weight:800}.cost-row.total span:first-child{color:var(--ink)}.small-help{font-size:12px;color:var(--muted);margin:8px 0 0}
+        .map-modal{display:none;position:fixed;inset:0;z-index:9999;background:#102a43b8;padding:12px;align-items:center;justify-content:center}.map-modal.open{display:flex}.map-panel{background:#fff;border-radius:16px;width:min(900px,100%);max-height:96dvh;overflow:auto;padding:14px}.map-panel h2{margin:0 0 10px;font-size:18px}.map-search{display:flex;gap:8px;margin-bottom:10px}.map-search input{flex:1;min-width:0}.map-search button{white-space:nowrap}.map-canvas{height:min(52dvh,460px);min-height:280px;border-radius:12px;border:1px solid var(--line);z-index:1}.map-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.map-status{font-size:12px;color:var(--muted);margin:8px 0}.route-pick{width:100%;text-align:left;background:#eaf3f7;color:var(--navy)}
     @media(min-width:760px){header{padding:30px 24px 34px}h1{font-size:30px}main{padding:24px}.grid{grid-template-columns:1fr 1fr}.results{grid-template-columns:1fr 1fr}.card.results-card{grid-column:1/-1}.card.results-card .results{grid-template-columns:repeat(4,1fr)}}
   </style>
 </head>
@@ -52,11 +54,18 @@
 <option value="Perigosa (carga geral)">Perigosa (carga geral)</option>
 <option value="Carga Granel Pressurizada">Carga granel pressurizada</option>
 </select></div>
-        <div class="field"><label for="outKm">Distância de ida (km)</label><input id="outKm" type="number" min="0" step="1" value="800"></div>
+        <div class="field full"><label>Origem e destino no mapa</label><button type="button" class="route-pick" id="pickOrigin">📍 Escolher local de partida no mapa</button><input id="routeOrigin" placeholder="Nenhum local de partida selecionado" readonly style="margin-top:7px"><button type="button" class="route-pick" id="pickDestination" style="margin-top:10px">🏁 Escolher local de destino no mapa</button><input id="routeDestination" placeholder="Nenhum destino selecionado" readonly style="margin-top:7px"><p class="hint">Escolha cada local e confirme em OK. Após confirmar os dois pontos, serão calculadas as distâncias de ida e retorno. O trajeto é genérico e precisa ser conferido para caminhões.</p><p id="routeStatus" class="map-status" role="status">Aguardando seleção da origem e do destino.</p></div>
+        <div class="field full"><label>Mapa da rota (opcional)</label>
+<div class="map-actions"><button type="button" class="map-btn" id="chooseOrigin">📍 Escolher partida no mapa</button>
+<button type="button" class="map-btn" id="chooseDestination">🏁 Escolher destino no mapa</button></div>
+<p class="hint" id="mapStatus">Escolha e confirme a partida e o destino para estimar as distâncias. Você também pode preencher os quilômetros manualmente.</p>
+<div class="fields"><div class="field"><label for="originText">Partida selecionada</label><input id="originText" readonly placeholder="Nenhuma partida selecionada"></div>
+<div class="field"><label for="destinationText">Destino selecionado</label><input id="destinationText" readonly placeholder="Nenhum destino selecionado"></div></div></div>
+<div class="field"><label for="outKm">Distância de ida (km)</label><input id="outKm" type="number" min="0" step="1" value="800"></div>
         <div class="field"><label for="backKm">Distância de retorno (km)</label><input id="backKm" type="number" min="0" step="1" value="800"></div>
-        <div class="field full"><label>Quais trechos o cliente está pagando?</label><div style="display:flex;gap:18px;flex-wrap:wrap;margin-top:8px"><label style="font-weight:normal"><input type="checkbox" id="paidOutbound" checked style="width:auto;min-width:auto"> Frete de ida</label><label style="font-weight:normal"><input type="checkbox" id="paidReturn" style="width:auto;min-width:auto"> Frete de volta</label></div><p class="hint">Marque cada trecho que tem pagamento de frete. O piso será conferido separadamente para cada trecho marcado.</p></div>
         <div class="field full"><label for="returnType">Situação do retorno</label><select id="returnType"><option value="empty">Vazio / sem frete de retorno</option><option value="loaded">Carregado com frete de retorno</option><option value="partial">Retorno parcial com frete</option></select><p class="hint" id="returnHint">O custo da distância de retorno é considerado mesmo sem faturamento de volta.</p></div>
         <div class="field"><label for="returnFreight">Valor do frete de volta (R$)</label><input id="returnFreight" type="number" min="0" step="0.01" value="0"></div>
+        <div class="field full"><label for="paidOutbound">Pagamento do frete — marque os trechos pagos pelo cliente</label><div style="display:flex;gap:18px;flex-wrap:wrap;margin-top:8px"><label style="font-weight:normal"><input type="checkbox" id="paidOutbound" checked style="width:auto;min-width:auto"> Frete de ida</label><label style="font-weight:normal"><input type="checkbox" id="paidReturn" style="width:auto;min-width:auto"> Frete de volta</label></div><p class="hint">Esta escolha fica em Dados do frete. A conferência da ANTT apenas utiliza essa informação para comparar os trechos pagos.</p></div>
         <div class="field"><label for="hours">Tempo total (horas)</label><input id="hours" type="number" min="0" step="0.5" value="30"></div>
       </div>
     </section>
@@ -145,10 +154,25 @@
       <p class="note">Estimativa operacional, não uma cotação oficial. O cálculo considera o retorno informado e custos digitados; confirme as despesas reais, tributos e condições do contrato.</p>
     </section>
   </div>
+<div class="map-modal" id="mapModal" role="dialog" aria-modal="true" aria-labelledby="mapTitle"><div class="map-panel"><h2 id="mapTitle">Escolher local no mapa</h2><div class="map-search"><input id="mapSearchInput" placeholder="Pesquisar endereço, cidade ou CEP" autocomplete="off"><button type="button" class="btn" id="mapSearchButton">Buscar</button></div><div id="mapCanvas" class="map-canvas" aria-label="Mapa interativo"></div><p class="map-status" id="mapHelp">Pesquise um endereço ou toque no mapa para marcar o local.</p><div class="map-actions"><button type="button" class="btn" id="confirmMapPoint">OK — confirmar local</button><button type="button" class="btn2" id="cancelMapPoint">Cancelar</button></div></div>
 </main>
-<footer>Calculadora de Frete • versão 0.7 • configurações salvas neste dispositivo</footer>
+
+<div class="map-modal" id="mapPicker" role="dialog" aria-modal="true" aria-label="Selecionar local no mapa">
+  <div class="map-dialog">
+    <h2 id="mapTitle">Selecionar local</h2>
+    <p class="map-note">Pesquise um endereço ou toque no mapa para marcar o ponto. Confirme antes de fechar.</p>
+    <div class="map-search"><input id="mapQuery" type="search" placeholder="Endereço, cidade ou CEP"><button type="button" class="btn" id="searchMap">Buscar</button></div>
+    <div id="routeMap"></div>
+    <p id="mapPicked" class="map-note">Nenhum ponto selecionado.</p>
+    <div class="actions"><button type="button" class="btn" id="confirmMap">OK — confirmar local</button><button type="button" class="btn2" id="cancelMap">Cancelar</button></div>
+    <p class="map-note">Mapa e rota dependem de internet. A rota não verifica restrições específicas de caminhões.</p>
+  </div>
+</div>
+
+<footer>Calculadora de Frete • versão 0.7 + mapa • teste</footer>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
-const storageKey='calculadoraFreteConfigV07';
+const storageKey='calculadoraFreteConfigV07MapaTeste';
 const defaults={vehicle:'Carreta LS',freight:10000,loadType:'Carga Geral',outKm:800,backKm:800,returnType:'empty',returnFreight:0,hours:30,consumption:2.5,diesel:6.2,arla:150,toll:800,maintenance:0.63,trip:250,otherVariable:0,monthlyFinancing:4000,monthlyInsurance:500,monthlyTracking:150,monthlyAnnualFees:350,monthlyDriver:800,monthlyOtherFixed:200,fixedMonthly:6000,monthlyKm:10000,taxPercent:0,margin:20};
 const ids=Object.keys(defaults);
 const $=id=>document.getElementById(id);
@@ -156,8 +180,8 @@ const num=id=>Math.max(0,Number($(id).value)||0);
 const money=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(Number.isFinite(n)?n:0);
 const pct=n=>new Intl.NumberFormat('pt-BR',{maximumFractionDigits:1}).format(Number.isFinite(n)?n:0)+'%';
 function totalFixedCosts(){const total=['monthlyFinancing','monthlyInsurance','monthlyTracking','monthlyAnnualFees','monthlyDriver','monthlyOtherFixed'].reduce((sum,id)=>sum+num(id),0);$('fixedMonthly').value=total.toFixed(2);return total;}
-function saveSettings(){try{const data={};ids.forEach(id=>{data[id]=$(id).value});data.operationType=$('operationType').value;data.anttVehicleType=$('anttVehicleType').value;data.anttAxles=$('anttAxles').value;data.paidOutbound=$('paidOutbound').checked;data.paidReturn=$('paidReturn').checked;localStorage.setItem(storageKey,JSON.stringify(data));$('saveStatus').textContent='✓ Dados salvos neste aparelho. Você pode editá-los quando precisar.';}catch(e){$('saveStatus').textContent='Não foi possível salvar neste navegador. Verifique as configurações de privacidade.';}}
-function loadSettings(){try{const saved=JSON.parse(localStorage.getItem(storageKey)||'null');const values={...defaults,...(saved&&typeof saved==='object'?saved:{})};Object.entries(values).forEach(([id,value])=>{if($(id))$(id).value=value;});$('operationType').value=(saved&&saved.operationType)||'unknown';$('anttVehicleType').value=(saved&&saved.anttVehicleType)||'complete';$('anttAxles').value=(saved&&saved.anttAxles)||'5';$('paidOutbound').checked=saved&&saved.paidOutbound!==undefined?saved.paidOutbound:true;$('paidReturn').checked=saved&&saved.paidReturn!==undefined?saved.paidReturn:false;}catch(e){Object.entries(defaults).forEach(([id,value])=>{if($(id))$(id).value=value;});}totalFixedCosts();}
+function saveSettings(){try{const data={};ids.forEach(id=>{data[id]=$(id).value});data.operationType=$('operationType').value;data.anttVehicleType=$('anttVehicleType').value;data.anttAxles=$('anttAxles').value;data.paidOutbound=$('paidOutbound').checked;data.paidReturn=$('paidReturn').checked;data.originPoint=originPoint;data.destinationPoint=destinationPoint;localStorage.setItem(storageKey,JSON.stringify(data));$('saveStatus').textContent='✓ Dados salvos neste aparelho. Você pode editá-los quando precisar.';}catch(e){$('saveStatus').textContent='Não foi possível salvar neste navegador. Verifique as configurações de privacidade.';}}
+function loadSettings(){try{const saved=JSON.parse(localStorage.getItem(storageKey)||'null');const values={...defaults,...(saved&&typeof saved==='object'?saved:{})};Object.entries(values).forEach(([id,value])=>{if($(id))$(id).value=value;});$('operationType').value=(saved&&saved.operationType)||'unknown';$('anttVehicleType').value=(saved&&saved.anttVehicleType)||'complete';$('anttAxles').value=(saved&&saved.anttAxles)||'5';$('paidOutbound').checked=saved&&saved.paidOutbound!==undefined?saved.paidOutbound:true;$('paidReturn').checked=saved&&saved.paidReturn!==undefined?saved.paidReturn:false;originPoint=saved&&saved.originPoint?saved.originPoint:null;destinationPoint=saved&&saved.destinationPoint?saved.destinationPoint:null;if(originPoint)$('routeOrigin').value=originPoint.display||`${originPoint.lat}, ${originPoint.lon}`;if(destinationPoint)$('routeDestination').value=destinationPoint.display||`${destinationPoint.lat}, ${destinationPoint.lon}`;}catch(e){Object.entries(defaults).forEach(([id,value])=>{if($(id))$(id).value=value;});}totalFixedCosts();}
 function calc(){
  const km=num('outKm')+num('backKm'), freight=num('freight')+num('returnFreight');
  const litres=num('consumption')>0?km/num('consumption'):0;
@@ -222,17 +246,105 @@ function calcAntt(){
  status.className='status '+(!any?'warn':under?'bad':'good');
  status.textContent='Carga geral: CCD '+money(ccd)+'/km + CC '+money(cc)+'. '+(!any?'Marque se o cliente paga a ida, a volta ou ambas.':under?'Pelo menos um trecho marcado como pago está abaixo do piso estimado.':'Os trechos marcados como pagos estão acima do piso estimado. Confirme categoria e enquadramento legal antes de contratar.');
 }
+
+let originPoint=null,destinationPoint=null,map=null,mapMarker=null,activeMapTarget='origin',selectedPoint=null;
+function routeStatus(msg){$('routeStatus').textContent=msg;}
+function openPicker(target){activeMapTarget=target;selectedPoint=target==='origin'?originPoint:destinationPoint;$('mapTitle').textContent=target==='origin'?'Escolher local de partida':'Escolher local de destino';$('mapHelp').textContent=selectedPoint?'Ponto atual carregado. Toque no mapa ou pesquise para alterar.':'Pesquise um endereço ou toque no mapa para marcar o local.';$('mapSearchInput').value='';$('mapModal').classList.add('open');if(!window.L){$('mapHelp').textContent='Mapa indisponível. Verifique sua conexão e tente novamente.';return;}if(!map){map=L.map('mapCanvas').setView([-3.119,-60.021],11);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap contributors'}).addTo(map);map.on('click',async e=>{await setSelectedPoint(e.latlng.lat,e.latlng.lng,true);});}setTimeout(()=>{map.invalidateSize();if(selectedPoint){map.setView([selectedPoint.lat,selectedPoint.lon],14);showMapMarker(selectedPoint.lat,selectedPoint.lon);}else{map.setView([-3.119,-60.021],11);if(mapMarker){map.removeLayer(mapMarker);mapMarker=null;}}},120);}
+function showMapMarker(lat,lon){if(mapMarker)map.removeLayer(mapMarker);mapMarker=L.marker([lat,lon]).addTo(map);}
+async function setSelectedPoint(lat,lon,reverse){selectedPoint={lat,lon,display:`${lat.toFixed(5)}, ${lon.toFixed(5)}`};showMapMarker(lat,lon);$('mapHelp').textContent='Ponto marcado. Buscando endereço…';if(reverse){try{const r=await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`);if(r.ok){const j=await r.json();if(j.display_name)selectedPoint.display=j.display_name;}}catch(e){}}$('mapHelp').textContent='Selecionado: '+selectedPoint.display;}
+async function searchMapPlace(){const q=$('mapSearchInput').value.trim();if(!q){$('mapHelp').textContent='Digite um endereço, cidade ou CEP.';return;}$('mapHelp').textContent='Pesquisando endereço…';try{const r=await fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&q='+encodeURIComponent(q));if(!r.ok)throw new Error('Busca indisponível');const items=await r.json();if(!items.length){$('mapHelp').textContent='Nenhum local encontrado. Tente incluir cidade e estado.';return;}const item=items[0];await setSelectedPoint(Number(item.lat),Number(item.lon),false);selectedPoint.display=item.display_name;$('mapHelp').textContent='Resultado selecionado: '+item.display_name;map.setView([selectedPoint.lat,selectedPoint.lon],14);}catch(e){$('mapHelp').textContent='Não foi possível pesquisar agora. Tente novamente ou toque diretamente no mapa.';}}
+async function getRoadDistance(from,to){const url=`https://router.project-osrm.org/route/v1/driving/${from.lon},${from.lat};${to.lon},${to.lat}?overview=false&steps=false`;const r=await fetch(url);if(!r.ok)throw new Error('Serviço de rota indisponível');const j=await r.json();if(j.code!=='Ok'||!j.routes||!j.routes[0])throw new Error('Não foi encontrada rota para esse trecho');return j.routes[0].distance/1000;}
+async function updateRouteDistances(){if(!originPoint||!destinationPoint){routeStatus('Selecione a origem e o destino para calcular as distâncias.');return;}routeStatus('Calculando ida e retorno…');try{const [out,back]=await Promise.all([getRoadDistance(originPoint,destinationPoint),getRoadDistance(destinationPoint,originPoint)]);$('outKm').value=out.toFixed(1);$('backKm').value=back.toFixed(1);calc();calcAntt();saveSettings();routeStatus(`Distâncias atualizadas: ida ${out.toFixed(1)} km • retorno ${back.toFixed(1)} km. Confira se a rota é adequada para seu caminhão.`);}catch(e){routeStatus('Não foi possível calcular automaticamente: '+e.message+'. Informe os quilômetros manualmente.');}}
+$('pickOrigin').addEventListener('click',()=>openPicker('origin'));$('pickDestination').addEventListener('click',()=>openPicker('destination'));
+$('routeOrigin').addEventListener('click',()=>openPicker('origin'));$('routeDestination').addEventListener('click',()=>openPicker('destination'));
+$('confirmMapPoint').addEventListener('click',async()=>{if(!selectedPoint){$('mapHelp').textContent='Escolha um ponto no mapa ou pesquise um endereço antes de confirmar.';return;}if(activeMapTarget==='origin'){originPoint={...selectedPoint};$('routeOrigin').value=selectedPoint.display;}else{destinationPoint={...selectedPoint};$('routeDestination').value=selectedPoint.display;}$('mapModal').classList.remove('open');saveSettings();if(originPoint&&destinationPoint)await updateRouteDistances();else routeStatus('Local confirmado. Agora selecione '+(originPoint?'o destino.':'o local de partida.'));});
+$('cancelMapPoint').addEventListener('click',()=>$('mapModal').classList.remove('open'));$('mapSearchButton').addEventListener('click',searchMapPlace);$('mapSearchInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();searchMapPlace();}});$('mapModal').addEventListener('click',e=>{if(e.target===$('mapModal'))$('mapModal').classList.remove('open');});
+
 function updateAndSave(){totalFixedCosts();calc();calcAntt();saveSettings();}
 loadSettings();
 ids.filter(id=>id!=='fixedMonthly').forEach(id=>$(id).addEventListener('input',updateAndSave));['paidOutbound','paidReturn'].forEach(id=>$(id).addEventListener('change',updateAndSave));
 document.querySelectorAll('[data-fixed-cost]').forEach(el=>el.addEventListener('input',updateAndSave));
 $('recalc').addEventListener('click',()=>{totalFixedCosts();calc();calcAntt();saveSettings();});
-$('reset').addEventListener('click',()=>{Object.entries(defaults).forEach(([id,value])=>$(id).value=value);$('operationType').value='unknown';$('anttVehicleType').value='complete';$('anttAxles').value='5';$('paidOutbound').checked=true;$('paidReturn').checked=false;totalFixedCosts();calc();calcAntt();saveSettings();});
-$('clearSaved').addEventListener('click',()=>{if(confirm('Apagar os dados salvos neste aparelho e restaurar os valores de exemplo?')){try{localStorage.removeItem(storageKey);}catch(e){}Object.entries(defaults).forEach(([id,value])=>$(id).value=value);$('operationType').value='unknown';$('anttVehicleType').value='complete';$('anttAxles').value='5';$('paidOutbound').checked=true;$('paidReturn').checked=false;totalFixedCosts();calc();calcAntt();saveSettings();$('saveStatus').textContent='Dados anteriores apagados; valores de exemplo salvos novamente.';}});
+$('reset').addEventListener('click',()=>{originPoint=null;destinationPoint=null;$('routeOrigin').value='';$('routeDestination').value='';routeStatus('Aguardando seleção da origem e do destino.');Object.entries(defaults).forEach(([id,value])=>$(id).value=value);$('operationType').value='unknown';$('anttVehicleType').value='complete';$('anttAxles').value='5';$('paidOutbound').checked=true;$('paidReturn').checked=false;totalFixedCosts();calc();calcAntt();saveSettings();});
+$('clearSaved').addEventListener('click',()=>{if(confirm('Apagar os dados salvos neste aparelho e restaurar os valores de exemplo?')){try{localStorage.removeItem(storageKey);}catch(e){}originPoint=null;destinationPoint=null;$('routeOrigin').value='';$('routeDestination').value='';routeStatus('Aguardando seleção da origem e do destino.');Object.entries(defaults).forEach(([id,value])=>$(id).value=value);$('operationType').value='unknown';$('anttVehicleType').value='complete';$('anttAxles').value='5';$('paidOutbound').checked=true;$('paidReturn').checked=false;totalFixedCosts();calc();calcAntt();saveSettings();$('saveStatus').textContent='Dados anteriores apagados; valores de exemplo salvos novamente.';}});
 $('share').addEventListener('click',async()=>{const summary=`Calculadora de Frete\nFaturamento bruto total: ${$('revenue').textContent}\nFrete de ida: ${money(num('freight'))}\nFrete de retorno: ${money(num('returnFreight'))}\nDistância total: ${$('totalKm').textContent}\nCustos estimados: ${$('totalCost').textContent}\nResultado estimado: ${$('profit').textContent}\nCusto/km: ${$('cpk').textContent}\nMargem: ${$('actualMargin').textContent}\nPiso ANTT exibido: ${$('anttFloor').textContent}; confirme a classificação.`;try{if(navigator.share)await navigator.share({title:'Resumo do frete',text:summary});else{await navigator.clipboard.writeText(summary);alert('Resumo copiado.')}}catch(e){}});
 calc();
 calcAntt();
 $('operationType').addEventListener('change',()=>{calcAntt();saveSettings();});$('anttVehicleType').addEventListener('change',()=>{calcAntt();saveSettings();});$('anttAxles').addEventListener('change',()=>{calcAntt();saveSettings();});
 if('serviceWorker' in navigator && location.protocol.startsWith('http')) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+
+// Seleção de pontos e cálculo experimental das distâncias.
+let v09MapInstance=null, v09MapMarker=null, v09MapMode="origin", v09PendingPoint=null;
+let v09OriginPoint=null, v09DestinationPoint=null;
+const v09MapStorageKey="calculadoraFreteMapaV1";
+const v09MapEl=id=>document.getElementById(id);
+function v09MapStatus(message){const el=v09MapEl("v09MapStatus");if(el)el.textContent=message;}
+function v09InitRouteMap(){
+ if(!window.L){v09MapStatus("Mapa indisponível. Preencha as distâncias manualmente.");return;}
+ if(v09MapInstance){setTimeout(()=>v09MapInstance.invalidateSize(),100);return;}
+ v09MapInstance=L.map("routeMap").setView([-3.119,-60.021],10);
+ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"&copy; OpenStreetMap contributors"}).addTo(v09MapInstance);
+ v09MapInstance.on("click",e=>v09SelectMapPoint(e.latlng.lat,e.latlng.lng));
+}
+async function v09ReverseGeocode(lat,lon){
+ try{const r=await fetch("https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat="+lat+"&lon="+lon);
+ if(!r.ok)throw Error();const d=await r.json();return d.display_name||(lat.toFixed(5)+", "+lon.toFixed(5));}
+ catch(e){return lat.toFixed(5)+", "+lon.toFixed(5);}
+}
+async function v09SelectMapPoint(lat,lon,label){
+ v09PendingPoint={lat,lon,label:label||"Ponto selecionado"};
+ if(v09MapMarker)v09MapMarker.remove();v09MapMarker=L.marker([lat,lon]).addTo(v09MapInstance);
+ v09MapEl("mapPicked").textContent="Ponto marcado. Buscando endereço…";
+ v09PendingPoint.label=label||await v09ReverseGeocode(lat,lon);v09MapEl("mapPicked").textContent=v09PendingPoint.label;
+}
+async function v09SearchMapLocation(){
+ const q=v09MapEl("mapQuery").value.trim();if(!q){v09MapEl("mapPicked").textContent="Digite um endereço, cidade ou CEP.";return;}
+ v09MapEl("mapPicked").textContent="Pesquisando…";
+ try{const r=await fetch("https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q="+encodeURIComponent(q));
+ if(!r.ok)throw Error();const a=await r.json();if(!a.length)throw Error();
+ const lat=Number(a[0].lat),lon=Number(a[0].lon);v09MapInstance.setView([lat,lon],14);await v09SelectMapPoint(lat,lon,a[0].display_name);
+ }catch(e){v09MapEl("mapPicked").textContent="Local não encontrado. Tente outro termo ou marque no mapa.";}
+}
+function v09OpenMapPicker(mode){
+ v09MapMode=mode;v09PendingPoint=null;v09MapMarker=null;
+ v09MapEl("mapTitle").textContent=mode==="origin"?"Escolher local de partida":"Escolher local de destino";
+ v09MapEl("mapPicked").textContent="Pesquise ou toque no mapa para marcar o ponto.";
+ v09MapEl("mapQuery").value="";v09MapEl("mapPicker").classList.add("open");setTimeout(v09InitRouteMap,100);
+}
+function v09CloseMapPicker(){v09MapEl("mapPicker").classList.remove("open");}
+function v09SaveMapPoints(){
+ try{localStorage.setItem(v09MapStorageKey,JSON.stringify({v09OriginPoint,v09DestinationPoint,originText:v09MapEl("originText").value,destinationText:v09MapEl("destinationText").value}));}catch(e){}
+}
+function v09LoadMapPoints(){
+ try{const d=JSON.parse(localStorage.getItem(v09MapStorageKey)||"null");if(!d)return;
+ v09OriginPoint=d.v09OriginPoint||null;v09DestinationPoint=d.v09DestinationPoint||null;v09MapEl("originText").value=d.originText||"";v09MapEl("destinationText").value=d.destinationText||"";}catch(e){}
+}
+function v09RouteDistance(a,b){
+ const url="https://router.project-osrm.org/route/v1/driving/"+a.lon+","+a.lat+";"+b.lon+","+b.lat+"?overview=false";
+ return fetch(url).then(r=>{if(!r.ok)throw Error();return r.json();}).then(d=>{if(d.code!=="Ok"||!d.routes||!d.routes.length)throw Error();return d.routes[0].distance/1000;});
+}
+async function v09CalculateMapRoutes(){
+ if(!v09OriginPoint||!v09DestinationPoint){v09MapStatus("Confirme a partida e o destino para calcular as distâncias.");return;}
+ v09MapStatus("Calculando distâncias rodoviárias…");
+ try{const out=await v09RouteDistance(v09OriginPoint,v09DestinationPoint);const back=await v09RouteDistance(v09DestinationPoint,v09OriginPoint);
+ v09MapEl("outKm").value=out.toFixed(1);v09MapEl("backKm").value=back.toFixed(1);
+ if(typeof updateAndSave==="function")updateAndSave();
+ v09MapStatus("Distâncias preenchidas: ida "+out.toFixed(1)+" km e retorno "+back.toFixed(1)+" km. Confira a rota antes de viajar.");
+ }catch(e){v09MapStatus("Não foi possível calcular automaticamente. Preencha as distâncias manualmente.");}
+}
+v09MapEl("chooseOrigin").addEventListener("click",()=>v09OpenMapPicker("origin"));
+v09MapEl("chooseDestination").addEventListener("click",()=>v09OpenMapPicker("destination"));
+v09MapEl("searchMap").addEventListener("click",v09SearchMapLocation);
+v09MapEl("mapQuery").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();v09SearchMapLocation();}});
+v09MapEl("cancelMap").addEventListener("click",v09CloseMapPicker);
+v09MapEl("confirmMap").addEventListener("click",()=>{
+ if(!v09PendingPoint){v09MapEl("mapPicked").textContent="Primeiro pesquise ou marque um ponto.";return;}
+ const point={lat:v09PendingPoint.lat,lon:v09PendingPoint.lon};
+ if(v09MapMode==="origin"){v09OriginPoint=point;v09MapEl("originText").value=v09PendingPoint.label;}
+ else{v09DestinationPoint=point;v09MapEl("destinationText").value=v09PendingPoint.label;}
+ v09SaveMapPoints();v09CloseMapPicker();v09CalculateMapRoutes();
+});
+v09LoadMapPoints();
+
 </script>
 </body></html>

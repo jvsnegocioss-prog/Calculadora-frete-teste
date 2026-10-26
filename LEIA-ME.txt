@@ -1,32 +1,23 @@
-CALCULADORA DE FRETE — VERSÃO DE TESTE COM MAPA
+CALCULADORA DE FRETE — TESTE COM MAPA
+Pacote de teste, não publicado automaticamente.
 
-Base: arquivos da versão enviada pelo usuário (HTML com custos e conferência ANTT), preservando o foco em caminhões.
+Arquivos:
+- index.html: calculadora e seletor de mapa
+- manifest.webmanifest: instalação PWA
+- sw.js: cache dos arquivos locais do aplicativo
+- icon-192.png e icon-512.png: ícones
 
-NOVO NESTA VERSÃO
-- Seleção de origem e destino em mapa interativo.
-- Pesquisa de endereço/cidade/CEP e seleção por toque no mapa.
-- Ao confirmar ambos os pontos, tenta preencher as distâncias de ida e retorno usando o serviço público OSRM.
-- Guarda os pontos selecionados localmente neste navegador.
-- Mantém os campos de km editáveis para preenchimento manual se o serviço não responder.
+Como testar:
+1. Publique os arquivos no repositório de teste, substituindo os arquivos de mesmo nome.
+2. Abra o endereço de teste e recarregue a página.
+3. Em Dados do frete, escolha a partida e confirme.
+4. Escolha o destino e confirme.
+5. Confira se as distâncias de ida e retorno são preenchidas.
+6. Verifique os resultados e os dados salvos.
 
-IMPORTANTE
-- Esta é uma versão de teste; não foi publicada no GitHub Pages e não altera a versão em produção.
-- O mapa depende de internet e de bibliotecas/serviços externos (Leaflet, OpenStreetMap, Nominatim e OSRM público). Eles podem limitar ou indisponibilizar consultas.
-- O roteamento OSRM público é genérico para veículos de passeio e NÃO garante rota adequada para caminhões. Não verifica altura, peso, largura, comprimento, eixos, pontes ou restrições locais. Confira a rota antes de viajar.
-- A distância de retorno é consultada separadamente, no sentido destino → origem; pode diferir da ida.
-- O módulo ANTT e os coeficientes recebidos foram preservados como estavam no arquivo-base; não foram verificados oficialmente nesta atualização.
-- Os dados de custos são salvos no aparelho/navegador. Limpar os dados do site pode apagá-los.
-
-PARA TESTAR
-1. Publique estes arquivos apenas em um repositório/ambiente de teste.
-2. Abra o site com internet, escolha partida e destino e confirme cada um.
-3. Confira as distâncias calculadas e compare com uma rota conhecida.
-4. Se o serviço falhar, digite os quilômetros manualmente.
-5. Não substitua a versão publicada até concluir os testes.
-
-
-CORREÇÃO DE ORGANIZAÇÃO
-- A seleção dos trechos pagos pelo cliente deve aparecer exclusivamente em Dados do frete.
-- O painel da ANTT deve apenas ler essa seleção para realizar a comparação do piso, sem exibir uma segunda seleção.
-- O nome do cache do service worker foi atualizado para forçar a troca do cache anterior.
-- Confirme no ambiente de teste após publicar; não publique sobre a versão oficial antes de validar.
+Limitações:
+- Mapa, busca e rotas precisam de internet.
+- Usa serviços públicos OpenStreetMap/Nominatim/OSRM, que podem ter limites ou indisponibilidade.
+- O roteamento é genérico e não verifica restrições específicas para caminhões (peso, altura, largura, comprimento, eixos ou pontes).
+- Se falhar, preencha a quilometragem manualmente.
+- Coeficientes ANTT ainda precisam de validação oficial.
