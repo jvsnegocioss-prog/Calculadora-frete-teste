@@ -1,7 +1,7 @@
 {
-  "name": "Calculadora de Frete — Teste",
+  "name": "Calculadora de Frete — Teste v1.1",
   "short_name": "Frete Teste",
-  "description": "Teste de custos, lucro e conferência de frete.",
+  "description": "Teste v1.1 de custos, lucro, perfis de veículos e mapa e cálculo de rotas em teste.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

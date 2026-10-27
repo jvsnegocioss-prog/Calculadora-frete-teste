@@ -1,11 +1,28 @@
-CALCULADORA DE FRETE — ATUALIZAÇÃO DE BOTÕES INDIVIDUAIS
+CALCULADORA DE FRETE — VERSÃO 1.1 MAPA (TESTE)
 
-Alterações:
-1. Botão do mapa renomeado para “Escolher origem no mapa”.
-2. Botão de destino mantém “Escolher destino no mapa”.
-3. Campo renomeado para “Origem do frete”, com botão próprio “Limpar origem”.
-4. Campo renomeado para “Destino do frete”, com botão próprio “Limpar destino”.
+Esta versão é destinada a testes e não altera a versão de produção.
 
-Cada botão apaga somente o endereço correspondente e preserva o outro. Os quilômetros continuam editáveis manualmente. O mapa e as distâncias automáticas dependem de serviços públicos e internet; a rota não verifica restrições específicas de caminhões.
+NOVIDADES
+- Botões para escolher origem e destino em um mapa dentro da calculadora.
+- Pesquisa de endereço/cidade/CEP e seleção por toque no mapa.
+- Ao confirmar os dois pontos, busca a distância de ida e a rota independente de retorno.
+- As distâncias preenchem os campos de km e atualizam os cálculos de custo e resultado.
+- Endereços e coordenadas ficam salvos no perfil do veículo neste aparelho.
 
-Para publicar, substitua os arquivos no repositório de teste. Este pacote não foi publicado automaticamente.
+LIMITAÇÕES IMPORTANTES
+- O mapa usa Leaflet e mapas OpenStreetMap; pesquisa usa Nominatim; cálculo de rota usa o serviço público de demonstração OSRM.
+- Esses serviços públicos podem ter limites, indisponibilidade ou regras de uso; não há garantia de disponibilidade para uso comercial intenso. Se necessário, substitua por um provedor contratado.
+- A rota calculada é uma rota rodoviária genérica para carros, NÃO uma rota validada para caminhões. Não considera garantidamente altura, peso, largura, restrições de eixos, pontes, vias proibidas ou restrições específicas por veículo. Confira a rota antes de viajar.
+- Se a consulta falhar, informe os quilômetros manualmente. A distância de ida e retorno são calculadas separadamente.
+- Requer internet para carregar mapa, pesquisar locais e calcular rotas.
+- Custos por veículo são valores de exemplo, não recomendações financeiras.
+- O painel ANTT continua sujeito à conferência; não considerar este app como confirmação de conformidade legal.
+
+INSTALAÇÃO / TESTE
+1. Extraia todos os arquivos mantendo-os na mesma pasta.
+2. Publique somente no repositório de teste, não no de produção.
+3. Abra o site de teste com internet, escolha origem e destino e confirme ambos.
+4. Verifique se os km de ida e volta foram atualizados e se os resultados mudaram.
+5. Teste também troca de veículo, salvamento e reabertura do app.
+
+Esta entrega contém arquivos preparados localmente. Ela não foi enviada ao GitHub nem publicada automaticamente.
