@@ -9,7 +9,6 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon-192.png">
   <title>Calculadora de Frete</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
   <style>
     :root{color-scheme:light;--navy:#102a43;--blue:#176b87;--cyan:#d9f0f4;--bg:#f3f6f8;--card:#fff;--ink:#172b3a;--muted:#617586;--line:#dce5ea;--green:#16794b;--amber:#a55a08;--red:#b42318}
     *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
@@ -24,19 +23,8 @@
     .results{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{background:#f5f8fa;border:1px solid var(--line);padding:13px;border-radius:13px;min-width:0}.metric .label{font-size:12px;color:var(--muted);font-weight:650}.metric strong{display:block;font-size:21px;letter-spacing:-.5px;margin-top:5px;overflow-wrap:anywhere}.metric.primary{background:var(--navy);color:white;border-color:var(--navy)}.metric.primary .label{color:#d5e4ed}.metric.primary strong{font-size:25px}.status{padding:12px 13px;border-radius:12px;font-size:13px;font-weight:700;margin-top:12px;background:#edf2f5;color:#445967}.status.good{background:#e5f5eb;color:var(--green)}.status.warn{background:#fff2df;color:var(--amber)}.status.bad{background:#fde9e7;color:var(--red)}
     .note{font-size:12px;color:var(--muted);margin:12px 0 0}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}button{border:0;border-radius:11px;padding:12px 15px;font:inherit;font-size:14px;font-weight:750;cursor:pointer}.btn{background:var(--blue);color:white}.btn2{background:#e8eef2;color:var(--navy)}footer{font-size:12px;color:var(--muted);padding:0 14px 28px;text-align:center}
     .section-intro{font-size:13px;color:var(--muted);margin:-7px 0 14px}.wide-result{margin-top:14px}.antt{border:1px dashed #a7bac6;background:#f7fafb;border-radius:13px;padding:13px;margin-top:12px}.antt strong{font-size:13px}.antt p{font-size:12px;color:var(--muted);margin:5px 0 0}.breakdown{margin-top:14px;border:1px solid var(--line);border-radius:13px;overflow:hidden}.breakdown h3{font-size:14px;margin:0;padding:12px;background:#f5f8fa}.cost-row{display:flex;justify-content:space-between;gap:12px;padding:9px 12px;border-top:1px solid var(--line);font-size:13px}.cost-row span:first-child{color:var(--muted)}.cost-row strong{text-align:right;white-space:nowrap}.cost-row.total{background:#eef4f7;font-weight:800}.cost-row.total span:first-child{color:var(--ink)}.small-help{font-size:12px;color:var(--muted);margin:8px 0 0}
-        .map-modal{display:none;position:fixed;inset:0;z-index:9999;background:#102a43b8;padding:12px;align-items:center;justify-content:center}.map-modal.open{display:flex}.map-panel{background:#fff;border-radius:16px;width:min(900px,100%);max-height:96dvh;overflow:auto;padding:14px}.map-panel h2{margin:0 0 10px;font-size:18px}.map-search{display:flex;gap:8px;margin-bottom:10px;align-items:stretch}.map-search input{flex:1;min-width:0}.map-search button{padding:10px 12px;white-space:nowrap}.map-search input{flex:1;min-width:0}.map-search button{white-space:nowrap}.map-search-wrap{position:relative;margin-bottom:10px}.map-search-wrap .map-search{margin-bottom:0}.map-suggestions{display:none;position:absolute;left:0;right:0;top:100%;z-index:10000;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 24px #102a4326;max-height:220px;overflow:auto}.map-suggestions.open{display:block}.map-suggestion{display:block;width:100%;text-align:left;background:#fff;color:var(--ink);border-radius:0;border-bottom:1px solid var(--line);padding:11px 12px;font-size:13px;font-weight:500;line-height:1.35}.map-suggestion:last-child{border-bottom:0}.map-suggestion:active,.map-suggestion:focus{background:#eaf3f7}.map-suggestions-note{padding:10px 12px;font-size:12px;color:var(--muted)}.map-canvas{height:min(52dvh,460px);min-height:280px;border-radius:12px;border:1px solid var(--line);z-index:1}.map-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.map-status{font-size:12px;color:var(--muted);margin:8px 0}.route-pick{width:100%;text-align:left;background:#eaf3f7;color:var(--navy)}
     @media(min-width:760px){header{padding:30px 24px 34px}h1{font-size:30px}main{padding:24px}.grid{grid-template-columns:1fr 1fr}.results{grid-template-columns:1fr 1fr}.card.results-card{grid-column:1/-1}.card.results-card .results{grid-template-columns:repeat(4,1fr)}}
   </style>
-
-<style>
-.map-btn{appearance:none;-webkit-appearance:none;display:block;width:100%;text-align:left;background:#176b87!important;color:#fff!important;border:0;border-radius:12px;padding:14px 16px;font:inherit;font-weight:750;cursor:pointer;pointer-events:auto;position:relative;z-index:2}
-.map-modal{display:none;position:fixed;inset:0;z-index:99999;background:rgba(16,42,67,.72);padding:12px;align-items:center;justify-content:center}
-.map-modal.open{display:flex!important}
-.map-dialog{background:#fff;border-radius:16px;padding:14px;width:min(760px,100%);max-height:94vh;overflow:auto}
-#routeMap{height:48vh;min-height:280px;border-radius:12px;border:1px solid #dce5ea;margin:10px 0}
-.map-search{display:flex;gap:8px;align-items:center}.map-search input{flex:1;min-width:0;padding-right:42px}.map-query-wrap{position:relative;flex:1;min-width:0}.map-query-wrap input{width:100%}.map-query-x{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:30px;height:30px;padding:0;border-radius:50%;background:transparent;color:#526574;font-size:22px;line-height:1;display:none}.map-query-wrap.has-value .map-query-x{display:block}.clear-addresses{margin-top:10px;background:#e8eef2;color:#102a43;width:100%}
-</style>
-
 </head>
 <body>
 <header><div class="wrap">
@@ -64,17 +52,10 @@
 <option value="Perigosa (carga geral)">Perigosa (carga geral)</option>
 <option value="Carga Granel Pressurizada">Carga granel pressurizada</option>
 </select></div>
-        <div class="field full"><label>Mapa da rota (opcional)</label>
-<div class="map-actions"><button type="button" class="map-btn" id="chooseOrigin">📍 1. Escolher origem no mapa</button>
-<button type="button" class="map-btn" id="chooseDestination">🏁 2. Escolher destino no mapa</button></div>
-<p class="hint" id="mapStatus">Escolha e confirme a partida e o destino para estimar as distâncias. Você também pode preencher os quilômetros manualmente.</p>
-<div class="fields"><div class="field"><label for="originText">3. Origem do frete</label><input id="originText" readonly placeholder="Nenhuma origem selecionada"><button type="button" class="btn2 clear-address" id="clearOriginAddress">✕ Limpar origem</button></div>
-<div class="field"><label for="destinationText">4. Destino do frete</label><input id="destinationText" readonly placeholder="Nenhum destino selecionado"><button type="button" class="btn2 clear-address" id="clearDestinationAddress">✕ Limpar destino</button></div></div></div>
-<div class="field"><label for="outKm">Distância de ida (km)</label><input id="outKm" type="number" min="0" step="1" value="800"></div>
+        <div class="field"><label for="outKm">Distância de ida (km)</label><input id="outKm" type="number" min="0" step="1" value="800"></div>
         <div class="field"><label for="backKm">Distância de retorno (km)</label><input id="backKm" type="number" min="0" step="1" value="800"></div>
         <div class="field full"><label for="returnType">Situação do retorno</label><select id="returnType"><option value="empty">Vazio / sem frete de retorno</option><option value="loaded">Carregado com frete de retorno</option><option value="partial">Retorno parcial com frete</option></select><p class="hint" id="returnHint">O custo da distância de retorno é considerado mesmo sem faturamento de volta.</p></div>
         <div class="field"><label for="returnFreight">Valor do frete de volta (R$)</label><input id="returnFreight" type="number" min="0" step="0.01" value="0"></div>
-        <div class="field full"><label for="paidOutbound">Pagamento do frete — marque os trechos pagos pelo cliente</label><div style="display:flex;gap:18px;flex-wrap:wrap;margin-top:8px"><label style="font-weight:normal"><input type="checkbox" id="paidOutbound" checked style="width:auto;min-width:auto"> Frete de ida</label><label style="font-weight:normal"><input type="checkbox" id="paidReturn" style="width:auto;min-width:auto"> Frete de volta</label></div><p class="hint">Esta escolha fica em Dados do frete. A conferência da ANTT apenas utiliza essa informação para comparar os trechos pagos.</p></div>
         <div class="field"><label for="hours">Tempo total (horas)</label><input id="hours" type="number" min="0" step="0.5" value="30"></div>
       </div>
     </section>
@@ -141,6 +122,7 @@
 <strong>Conferência do piso mínimo da ANTT</strong>
 <p>Escolha o conjunto usado nesta viagem, os eixos carregados e a classificação da operação. A calculadora seleciona a tabela conforme o tipo de contratação.</p>
 <div class="fields" style="margin-top:12px">
+<div class="field full"><label>Quais trechos o cliente está pagando?</label><div style="display:flex;gap:18px;flex-wrap:wrap;margin-top:8px"><label style="font-weight:normal"><input type="checkbox" id="paidOutbound" checked style="width:auto;min-width:auto"> Frete de ida</label><label style="font-weight:normal"><input type="checkbox" id="paidReturn" style="width:auto;min-width:auto"> Frete de volta</label></div><p class="hint">Marque cada trecho que tem pagamento de frete. O piso será conferido separadamente para cada trecho marcado.</p></div>
 <div class="field full"><label for="anttVehicleType">Conjunto contratado</label>
 <select id="anttVehicleType"><option value="complete">Cavalo mecânico + semirreboque (conjunto completo)</option><option value="traction">Somente cavalo mecânico (unidade de tração)</option></select></div>
 <div class="field"><label for="anttAxles">Eixos carregados</label>
@@ -164,23 +146,9 @@
     </section>
   </div>
 </main>
-
-<div class="map-modal" id="mapPicker" role="dialog" aria-modal="true" aria-label="Selecionar local no mapa">
-  <div class="map-dialog">
-    <h2 id="mapTitle">Selecionar local</h2>
-    <p class="map-note">Pesquise um endereço ou toque no mapa para marcar o ponto. Confirme antes de fechar.</p>
-    <div class="map-search-wrap"><div class="map-search"><div class="map-query-wrap" id="mapQueryWrap"><input id="mapQuery" type="search" autocomplete="off" placeholder="Digite o endereço, cidade ou CEP"><button type="button" class="map-query-x" id="clearMapQuery" aria-label="Apagar texto da busca">×</button></div><button type="button" class="btn" id="searchMap">Buscar</button></div><div id="mapSuggestions" class="map-suggestions" role="listbox" aria-label="Sugestões de endereço"></div><button type="button" class="btn2" id="useCurrentLocation" style="width:100%;margin-top:8px">◎ Usar minha localização atual</button></div>
-    <div id="routeMap"></div>
-    <p id="mapPicked" class="map-note">Nenhum ponto selecionado.</p>
-    <div class="actions"><button type="button" class="btn" id="confirmMap">OK — confirmar local</button><button type="button" class="btn2" id="cancelMap">Cancelar</button></div>
-    <p class="map-note">Mapa e rota dependem de internet. A rota não verifica restrições específicas de caminhões.</p>
-  </div>
-</div>
-
-<footer>Calculadora de Frete • versão 0.7 • busca simplificada e limpeza de endereços • teste</footer>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<footer>Calculadora de Frete • versão 0.9 • teste • configurações salvas neste dispositivo</footer>
 <script>
-const storageKey='calculadoraFreteConfigV07MapaTeste';
+const storageKey='calculadoraFreteConfigV09_TESTE';
 const defaults={vehicle:'Carreta LS',freight:10000,loadType:'Carga Geral',outKm:800,backKm:800,returnType:'empty',returnFreight:0,hours:30,consumption:2.5,diesel:6.2,arla:150,toll:800,maintenance:0.63,trip:250,otherVariable:0,monthlyFinancing:4000,monthlyInsurance:500,monthlyTracking:150,monthlyAnnualFees:350,monthlyDriver:800,monthlyOtherFixed:200,fixedMonthly:6000,monthlyKm:10000,taxPercent:0,margin:20};
 const ids=Object.keys(defaults);
 const $=id=>document.getElementById(id);
@@ -188,61 +156,10 @@ const num=id=>Math.max(0,Number($(id).value)||0);
 const money=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(Number.isFinite(n)?n:0);
 const pct=n=>new Intl.NumberFormat('pt-BR',{maximumFractionDigits:1}).format(Number.isFinite(n)?n:0)+'%';
 function totalFixedCosts(){const total=['monthlyFinancing','monthlyInsurance','monthlyTracking','monthlyAnnualFees','monthlyDriver','monthlyOtherFixed'].reduce((sum,id)=>sum+num(id),0);$('fixedMonthly').value=total.toFixed(2);return total;}
-function saveSettings(){
-  try{
-    const data={};
-
-    ids.forEach(id=>{
-      const el=$(id);
-      if(el) data[id]=el.value;
-    });
-
-    data.operationType=$('operationType').value;
-    data.anttVehicleType=$('anttVehicleType').value;
-    data.anttAxles=$('anttAxles').value;
-    data.paidOutbound=$('paidOutbound').checked;
-    data.paidReturn=$('paidReturn').checked;
-
-    localStorage.setItem(storageKey,JSON.stringify(data));
-
-    $('saveStatus').textContent=
-      '✓ Dados salvos neste aparelho. Você pode editá-los quando precisar.';
-  }catch(e){
-    $('saveStatus').textContent=
-      'Não foi possível salvar neste navegador. Verifique as configurações de privacidade.';
-  }
-}
-function loadSettings(){
-  try{
-    const saved=JSON.parse(localStorage.getItem(storageKey)||'null');
-    const values={...defaults,...(saved&&typeof saved==='object'?saved:{})};
-
-    Object.entries(values).forEach(([id,value])=>{
-      const el=$(id);
-      if(el) el.value=value;
-    });
-
-    $('operationType').value=(saved&&saved.operationType)||'unknown';
-    $('anttVehicleType').value=(saved&&saved.anttVehicleType)||'complete';
-    $('anttAxles').value=(saved&&saved.anttAxles)||'5';
-
-    $('paidOutbound').checked=
-      saved&&saved.paidOutbound!==undefined?saved.paidOutbound:true;
-
-    $('paidReturn').checked=
-      saved&&saved.paidReturn!==undefined?saved.paidReturn:false;
-
-  }catch(e){
-    Object.entries(defaults).forEach(([id,value])=>{
-      const el=$(id);
-      if(el) el.value=value;
-    });
-  }
-
-  totalFixedCosts();
-}
+function saveSettings(){try{const data={};ids.forEach(id=>{data[id]=$(id).value});data.operationType=$('operationType').value;data.anttVehicleType=$('anttVehicleType').value;data.anttAxles=$('anttAxles').value;data.paidOutbound=$('paidOutbound').checked;data.paidReturn=$('paidReturn').checked;localStorage.setItem(storageKey,JSON.stringify(data));$('saveStatus').textContent='✓ Dados salvos neste aparelho. Você pode editá-los quando precisar.';}catch(e){$('saveStatus').textContent='Não foi possível salvar neste navegador. Verifique as configurações de privacidade.';}}
+function loadSettings(){try{const saved=JSON.parse(localStorage.getItem(storageKey)||'null');const values={...defaults,...(saved&&typeof saved==='object'?saved:{})};Object.entries(values).forEach(([id,value])=>{if($(id))$(id).value=value;});$('operationType').value=(saved&&saved.operationType)||'unknown';$('anttVehicleType').value=(saved&&saved.anttVehicleType)||'complete';$('anttAxles').value=(saved&&saved.anttAxles)||'5';$('paidOutbound').checked=saved&&saved.paidOutbound!==undefined?saved.paidOutbound:true;$('paidReturn').checked=saved&&saved.paidReturn!==undefined?saved.paidReturn:false;}catch(e){Object.entries(defaults).forEach(([id,value])=>{if($(id))$(id).value=value;});}totalFixedCosts();}
 function calc(){
- const km=num('outKm')+num('backKm'), freight=num('freight')+num('returnFreight');
+ const km=num('outKm')+num('backKm'), freight=num('freight')+($('returnType').value==='empty'?0:num('returnFreight'));
  const litres=num('consumption')>0?km/num('consumption'):0;
  const fuel=litres*num('diesel'), maint=km*num('maintenance');
  const fixedPerKm=num('monthlyKm')>0?num('fixedMonthly')/num('monthlyKm'):0;
@@ -277,9 +194,13 @@ const anttGeneralCargo = {
 function calcAntt(){
  const vehicle=$('anttVehicleType').value, axle=Number($('anttAxles').value), op=$('operationType').value;
  const outKm=num('outKm'), backKm=num('backKm'), outFreight=num('freight'), backFreight=num('returnFreight'), status=$('anttStatus');
- const paidOut=$('paidOutbound').checked, paidBack=$('paidReturn').checked;
+ const paidOut=$('paidOutbound').checked, paidBack=$('paidReturn').checked && $('returnType').value!=='empty';
  const vehicleLabel=vehicle==='complete'?'conjunto completo':'somente unidade de tração';
  $('anttDistance').textContent=new Intl.NumberFormat('pt-BR').format(outKm)+' km / '+new Intl.NumberFormat('pt-BR').format(backKm)+' km';
+ if($('loadType').value!=='Carga Geral'){
+  $('anttTable').textContent='Não disponível';$('anttFloor').textContent='—';$('anttCompare').textContent='—';$('anttReturnFloor').textContent='—';$('anttReturnCompare').textContent='—';$('anttTotalFloor').textContent='—';
+  status.className='status warn';status.textContent='Piso não calculado: este teste possui coeficientes cadastrados somente para Carga Geral. Para esta categoria, confirme a tabela oficial vigente antes de usar o valor em uma contratação.';return;
+ }
  if(op==='unknown'){
   $('anttTable').textContent='Pendente';$('anttFloor').textContent='—';$('anttCompare').textContent='—';$('anttReturnFloor').textContent='—';$('anttReturnCompare').textContent='—';$('anttTotalFloor').textContent='—';
   status.className='status warn';status.textContent='Não calculado: confirme se a operação é convencional ou de alto desempenho.';return;
@@ -305,171 +226,17 @@ function calcAntt(){
  status.className='status '+(!any?'warn':under?'bad':'good');
  status.textContent='Carga geral: CCD '+money(ccd)+'/km + CC '+money(cc)+'. '+(!any?'Marque se o cliente paga a ida, a volta ou ambas.':under?'Pelo menos um trecho marcado como pago está abaixo do piso estimado.':'Os trechos marcados como pagos estão acima do piso estimado. Confirme categoria e enquadramento legal antes de contratar.');
 }
-
 function updateAndSave(){totalFixedCosts();calc();calcAntt();saveSettings();}
 loadSettings();
 ids.filter(id=>id!=='fixedMonthly').forEach(id=>$(id).addEventListener('input',updateAndSave));['paidOutbound','paidReturn'].forEach(id=>$(id).addEventListener('change',updateAndSave));
 document.querySelectorAll('[data-fixed-cost]').forEach(el=>el.addEventListener('input',updateAndSave));
 $('recalc').addEventListener('click',()=>{totalFixedCosts();calc();calcAntt();saveSettings();});
-$('reset').addEventListener('click',()=>{v09OriginPoint=null;v09DestinationPoint=null;$('originText').value='';$('destinationText').value='';v09SaveMapPoints();v09MapStatus('Aguardando seleção da origem e do destino.');Object.entries(defaults).forEach(([id,value])=>$(id).value=value);$('operationType').value='unknown';$('anttVehicleType').value='complete';$('anttAxles').value='5';$('paidOutbound').checked=true;$('paidReturn').checked=false;totalFixedCosts();calc();calcAntt();saveSettings();});
-$('clearSaved').addEventListener('click',()=>{if(confirm('Apagar os dados salvos neste aparelho e restaurar os valores de exemplo?')){try{localStorage.removeItem(storageKey);}catch(e){}v09OriginPoint=null;v09DestinationPoint=null;$('originText').value='';$('destinationText').value='';v09SaveMapPoints();v09MapStatus('Aguardando seleção da origem e do destino.');Object.entries(defaults).forEach(([id,value])=>$(id).value=value);$('operationType').value='unknown';$('anttVehicleType').value='complete';$('anttAxles').value='5';$('paidOutbound').checked=true;$('paidReturn').checked=false;totalFixedCosts();calc();calcAntt();saveSettings();$('saveStatus').textContent='Dados anteriores apagados; valores de exemplo salvos novamente.';}});
-$('share').addEventListener('click',async()=>{const summary=`Calculadora de Frete\nFaturamento bruto total: ${$('revenue').textContent}\nFrete de ida: ${money(num('freight'))}\nFrete de retorno: ${money(num('returnFreight'))}\nDistância total: ${$('totalKm').textContent}\nCustos estimados: ${$('totalCost').textContent}\nResultado estimado: ${$('profit').textContent}\nCusto/km: ${$('cpk').textContent}\nMargem: ${$('actualMargin').textContent}\nPiso ANTT exibido: ${$('anttFloor').textContent}; confirme a classificação.`;try{if(navigator.share)await navigator.share({title:'Resumo do frete',text:summary});else{await navigator.clipboard.writeText(summary);alert('Resumo copiado.')}}catch(e){}});
+$('reset').addEventListener('click',()=>{Object.entries(defaults).forEach(([id,value])=>$(id).value=value);$('operationType').value='unknown';$('anttVehicleType').value='complete';$('anttAxles').value='5';$('paidOutbound').checked=true;$('paidReturn').checked=false;totalFixedCosts();calc();calcAntt();saveSettings();});
+$('clearSaved').addEventListener('click',()=>{if(confirm('Apagar os dados salvos neste aparelho e restaurar os valores de exemplo?')){try{localStorage.removeItem(storageKey);}catch(e){}Object.entries(defaults).forEach(([id,value])=>$(id).value=value);$('operationType').value='unknown';$('anttVehicleType').value='complete';$('anttAxles').value='5';$('paidOutbound').checked=true;$('paidReturn').checked=false;totalFixedCosts();calc();calcAntt();saveSettings();$('saveStatus').textContent='Dados anteriores apagados; valores de exemplo salvos novamente.';}});
+$('share').addEventListener('click',async()=>{const summary=`Calculadora de Frete\nFaturamento bruto total: ${$('revenue').textContent}\nFrete de ida: ${money(num('freight'))}\nFrete de retorno considerado: ${money($('returnType').value==='empty'?0:num('returnFreight'))}\nDistância total: ${$('totalKm').textContent}\nCustos estimados: ${$('totalCost').textContent}\nResultado estimado: ${$('profit').textContent}\nCusto/km: ${$('cpk').textContent}\nMargem: ${$('actualMargin').textContent}\nPiso ANTT exibido: ${$('anttFloor').textContent}; confirme a classificação.`;try{if(navigator.share)await navigator.share({title:'Resumo do frete',text:summary});else{await navigator.clipboard.writeText(summary);alert('Resumo copiado.')}}catch(e){}});
 calc();
 calcAntt();
 $('operationType').addEventListener('change',()=>{calcAntt();saveSettings();});$('anttVehicleType').addEventListener('change',()=>{calcAntt();saveSettings();});$('anttAxles').addEventListener('change',()=>{calcAntt();saveSettings();});
 if('serviceWorker' in navigator && location.protocol.startsWith('http')) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
-
-// Seleção de pontos e cálculo experimental das distâncias.
-let v09MapInstance=null, v09MapMarker=null, v09MapMode="origin", v09PendingPoint=null;
-let v09OriginPoint=null, v09DestinationPoint=null;
-const v09MapStorageKey="calculadoraFreteMapaV1";
-const v09MapEl=id=>document.getElementById(id);
-function v09MapStatus(message){const el=v09MapEl("mapStatus");if(el)el.textContent=message;}
-function v09InitRouteMap(){
- if(!window.L){v09MapStatus("Mapa indisponível. Preencha as distâncias manualmente.");return;}
- if(v09MapInstance){setTimeout(()=>v09MapInstance.invalidateSize(),100);return;}
- v09MapInstance=L.map("routeMap").setView([-3.119,-60.021],10);
- L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"&copy; OpenStreetMap contributors"}).addTo(v09MapInstance);
- v09MapInstance.on("click",e=>v09SelectMapPoint(e.latlng.lat,e.latlng.lng));
-}
-async function v09ReverseGeocode(lat,lon){
- try{const r=await fetch("https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat="+lat+"&lon="+lon);
- if(!r.ok)throw Error();const d=await r.json();return d.display_name||(lat.toFixed(5)+", "+lon.toFixed(5));}
- catch(e){return lat.toFixed(5)+", "+lon.toFixed(5);}
-}
-async function v09SelectMapPoint(lat,lon,label){
- v09PendingPoint={lat,lon,label:label||"Ponto selecionado"};
- if(v09MapMarker)v09MapMarker.remove();v09MapMarker=L.marker([lat,lon]).addTo(v09MapInstance);
- v09MapEl("mapPicked").textContent="Ponto marcado. Buscando endereço…";
- v09PendingPoint.label=label||await v09ReverseGeocode(lat,lon);v09MapEl("mapPicked").textContent=v09PendingPoint.label;
-}
-let v09SuggestTimer=null, v09SuggestController=null, v09LastSuggestQuery="";
-function v09HideSuggestions(){const box=v09MapEl("mapSuggestions");box.classList.remove("open");box.innerHTML="";}
-function v09ShowSuggestionMessage(message){const box=v09MapEl("mapSuggestions");box.innerHTML="";const note=document.createElement("div");note.className="map-suggestions-note";note.textContent=message;box.appendChild(note);box.classList.add("open");}
-async function v09FetchAddressSuggestions(query){
- const q=query.trim();if(q.length<3){v09HideSuggestions();return;}
- if(q===v09LastSuggestQuery)return;v09LastSuggestQuery=q;
- if(v09SuggestController)v09SuggestController.abort();v09SuggestController=new AbortController();
- v09ShowSuggestionMessage("Buscando endereços…");
- try{
-  const url="https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=5&countrycodes=br&q="+encodeURIComponent(q);
-  const response=await fetch(url,{signal:v09SuggestController.signal});if(!response.ok)throw Error();const results=await response.json();
-  const box=v09MapEl("mapSuggestions");box.innerHTML="";
-  if(v09MapEl("mapQuery").value.trim()!==q)return;
-  if(!results.length){v09ShowSuggestionMessage("Nenhum endereço encontrado. Tente acrescentar cidade ou estado.");return;}
-  results.forEach(result=>{const button=document.createElement("button");button.type="button";button.className="map-suggestion";button.setAttribute("role","option");button.textContent=result.display_name;button.addEventListener("click",()=>v09ChooseAddressSuggestion(result));box.appendChild(button);});box.classList.add("open");
- }catch(error){if(error.name!=="AbortError")v09ShowSuggestionMessage("Sugestões indisponíveis no momento. Você pode tocar em Buscar ou marcar no mapa.");}
-}
-async function v09ChooseAddressSuggestion(result){
- const lat=Number(result.lat),lon=Number(result.lon);v09MapEl("mapQuery").value=result.display_name;v09HideSuggestions();
- if(!v09MapInstance)v09InitRouteMap();if(v09MapInstance)v09MapInstance.setView([lat,lon],16);
- await v09SelectMapPoint(lat,lon,result.display_name);
-}
-async function v09SearchMapLocation(){
- const q=v09MapEl("mapQuery").value.trim();if(!q){v09MapEl("mapPicked").textContent="Digite um endereço, cidade ou CEP.";return;}
- if(v09SuggestTimer){clearTimeout(v09SuggestTimer);v09SuggestTimer=null;}
- v09MapEl("mapPicked").textContent="Pesquisando endereço…";
- try{const r=await fetch("https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=5&countrycodes=br&q="+encodeURIComponent(q));
- if(!r.ok)throw Error();const results=await r.json();if(!results.length){v09MapEl("mapPicked").textContent="Local não encontrado. Tente outro termo ou marque no mapa.";return;}
- v09HideSuggestions();if(results.length>1){results.forEach(result=>{const box=v09MapEl("mapSuggestions"),button=document.createElement("button");button.type="button";button.className="map-suggestion";button.textContent=result.display_name;button.addEventListener("click",()=>v09ChooseAddressSuggestion(result));box.appendChild(button);});v09MapEl("mapSuggestions").classList.add("open");v09MapEl("mapPicked").textContent="Escolha o endereço correto na lista de opções.";}else await v09ChooseAddressSuggestion(results[0]);
- }catch(e){v09MapEl("mapPicked").textContent="Sugestões indisponíveis ou local não encontrado. Tente novamente ou marque no mapa.";}
-}
-v09MapEl("mapQuery").addEventListener("input",()=>{if(v09SuggestTimer)clearTimeout(v09SuggestTimer);v09LastSuggestQuery="";const q=v09MapEl("mapQuery").value;if(q.trim().length<3){v09HideSuggestions();return;}v09SuggestTimer=setTimeout(()=>v09FetchAddressSuggestions(q),750);});
-v09MapEl("mapQuery").addEventListener("focus",()=>{const q=v09MapEl("mapQuery").value.trim();if(q.length>=3&&v09MapEl("mapSuggestions").children.length)v09MapEl("mapSuggestions").classList.add("open");});
-document.addEventListener("click",event=>{if(!event.target.closest(".map-search-wrap"))v09HideSuggestions();});
-function v09OpenMapPicker(mode){
- v09MapMode=mode;v09PendingPoint=null;v09MapMarker=null;
- v09MapEl("mapTitle").textContent=mode==="origin"?"Escolher local de partida":"Escolher local de destino";
- v09MapEl("mapPicked").textContent="Pesquise ou toque no mapa para marcar o ponto.";
- v09MapEl("mapQuery").value="";v09LastSuggestQuery="";v09HideSuggestions();v09MapEl("mapPicker").classList.add("open");setTimeout(v09InitRouteMap,100);
-}
-function v09CloseMapPicker(){v09MapEl("mapPicker").classList.remove("open");}
-function v09SaveMapPoints(){
- try{localStorage.setItem(v09MapStorageKey,JSON.stringify({v09OriginPoint,v09DestinationPoint,originText:v09MapEl("originText").value,destinationText:v09MapEl("destinationText").value}));}catch(e){}
-}
-async function v09UseCurrentLocation(){
- const button=v09MapEl("useCurrentLocation");
- if(!navigator.geolocation){v09MapEl("mapPicked").textContent="Este navegador não oferece localização. Pesquise o endereço ou marque no mapa.";return;}
- button.disabled=true;button.textContent="Obtendo localização…";
- navigator.geolocation.getCurrentPosition(async pos=>{
-  try{
-   const lat=pos.coords.latitude,lon=pos.coords.longitude;
-   if(!v09MapInstance)v09InitRouteMap();
-   if(v09MapInstance)v09MapInstance.setView([lat,lon],16);
-   let label=lat.toFixed(6)+", "+lon.toFixed(6);
-   try{
-    const response=await fetch("https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat="+encodeURIComponent(lat)+"&lon="+encodeURIComponent(lon)+"&zoom=18&addressdetails=1");
-    if(response.ok){const data=await response.json();if(data.display_name)label=data.display_name;}
-   }catch(e){}
-   v09MapEl("mapQuery").value=label;v09UpdateQueryClear();
-   await v09SelectMapPoint(lat,lon,label);
-   v09MapEl("mapPicked").textContent="Sua localização foi encontrada. Confira o ponto e toque em OK — confirmar local.";
-  }catch(e){v09MapEl("mapPicked").textContent="Não foi possível usar a localização. Marque o ponto manualmente no mapa.";}
-  finally{button.disabled=false;button.textContent="◎ Usar minha localização atual";}
- },err=>{
-  let msg="Não foi possível obter sua localização.";
-  if(err.code===1)msg="Permita o acesso à localização nas configurações do navegador e tente novamente.";
-  else if(err.code===2)msg="Localização indisponível. Ative os serviços de localização e tente novamente.";
-  else if(err.code===3)msg="A localização demorou demais. Tente novamente.";
-  v09MapEl("mapPicked").textContent=msg;button.disabled=false;button.textContent="◎ Usar minha localização atual";
- },{enableHighAccuracy:true,timeout:15000,maximumAge:30000});
-}
-function v09LoadMapPoints(){
- try{const d=JSON.parse(localStorage.getItem(v09MapStorageKey)||"null");if(!d)return;
- v09OriginPoint=d.v09OriginPoint||null;v09DestinationPoint=d.v09DestinationPoint||null;v09MapEl("originText").value=d.originText||"";v09MapEl("destinationText").value=d.destinationText||"";}catch(e){}
-}
-function v09RouteDistance(a,b){
- const url="https://router.project-osrm.org/route/v1/driving/"+a.lon+","+a.lat+";"+b.lon+","+b.lat+"?overview=false";
- return fetch(url).then(r=>{if(!r.ok)throw Error();return r.json();}).then(d=>{if(d.code!=="Ok"||!d.routes||!d.routes.length)throw Error();return d.routes[0].distance/1000;});
-}
-async function v09CalculateMapRoutes(){
- if(!v09OriginPoint||!v09DestinationPoint){v09MapStatus("Confirme a partida e o destino para calcular as distâncias.");return;}
- v09MapStatus("Calculando distâncias rodoviárias…");
- try{const out=await v09RouteDistance(v09OriginPoint,v09DestinationPoint);const back=await v09RouteDistance(v09DestinationPoint,v09OriginPoint);
- v09MapEl("outKm").value=out.toFixed(1);v09MapEl("backKm").value=back.toFixed(1);
- if(typeof updateAndSave==="function")updateAndSave();
- v09MapStatus("Distâncias preenchidas: ida "+out.toFixed(1)+" km e retorno "+back.toFixed(1)+" km. Confira a rota antes de viajar.");
- }catch(e){v09MapStatus("Não foi possível calcular automaticamente. Preencha as distâncias manualmente.");}
-}
-const v09OriginButton=v09MapEl("chooseOrigin");
-const v09DestinationButton=v09MapEl("chooseDestination");
-if(v09OriginButton) v09OriginButton.addEventListener("click",()=>v09OpenMapPicker("origin"));
-if(v09DestinationButton) v09DestinationButton.addEventListener("click",()=>v09OpenMapPicker("destination"));
-v09MapEl("searchMap").addEventListener("click",v09SearchMapLocation);
-v09MapEl("useCurrentLocation").addEventListener("click",v09UseCurrentLocation);
-function v09UpdateQueryClear(){v09MapEl("mapQueryWrap").classList.toggle("has-value",!!v09MapEl("mapQuery").value);}
-v09MapEl("mapQuery").addEventListener("input",v09UpdateQueryClear);
-v09MapEl("clearMapQuery").addEventListener("click",()=>{
- if(v09SuggestTimer){clearTimeout(v09SuggestTimer);v09SuggestTimer=null;}
- if(v09SuggestController){v09SuggestController.abort();v09SuggestController=null;}
- v09LastSuggestQuery="";
- v09MapEl("mapQuery").value="";v09UpdateQueryClear();v09HideSuggestions();
- v09MapEl("mapQuery").focus();
-});
-v09UpdateQueryClear();
-v09MapEl("clearOriginAddress").addEventListener("click",()=>{
- v09OriginPoint=null;
- v09MapEl("originText").value="";
- v09SaveMapPoints();
- v09MapStatus("Origem apagada. O destino foi mantido. Escolha uma nova origem para recalcular a rota.");
-});
-v09MapEl("clearDestinationAddress").addEventListener("click",()=>{
- v09DestinationPoint=null;
- v09MapEl("destinationText").value="";
- v09SaveMapPoints();
- v09MapStatus("Destino apagado. A origem foi mantida. Escolha um novo destino para recalcular a rota.");
-});
-
-v09MapEl("mapQuery").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();v09SearchMapLocation();}});
-v09MapEl("cancelMap").addEventListener("click",v09CloseMapPicker);
-v09MapEl("confirmMap").addEventListener("click",()=>{
- if(!v09PendingPoint){v09MapEl("mapPicked").textContent="Primeiro pesquise ou marque um ponto.";return;}
- const point={lat:v09PendingPoint.lat,lon:v09PendingPoint.lon};
- if(v09MapMode==="origin"){v09OriginPoint=point;v09MapEl("originText").value=v09PendingPoint.label;}
- else{v09DestinationPoint=point;v09MapEl("destinationText").value=v09PendingPoint.label;}
- v09SaveMapPoints();v09CloseMapPicker();v09CalculateMapRoutes();
-});
-v09LoadMapPoints();
-
 </script>
 </body></html>

@@ -1,12 +1,31 @@
-CALCULADORA DE FRETE — ATUALIZAÇÃO DE BOTÕES INDIVIDUAIS
+CALCULADORA DE FRETE — PACOTE DE TESTE v0.9
 
-Alterações:
-1. Botão do mapa renomeado para “Escolher origem no mapa”.
-2. Botão de destino mantém “Escolher destino no mapa”.
-3. Campo renomeado para “Origem do frete”, com botão próprio “Limpar origem”.
-4. Campo renomeado para “Destino do frete”, com botão próprio “Limpar destino”.
+ARQUIVOS
+- index.html
+- sw.js
+- manifest.webmanifest
+- icon-192.png
+- icon-512.png
 
-Cada botão apaga somente o endereço correspondente e preserva o outro. Os quilômetros continuam editáveis manualmente. O mapa e as distâncias automáticas dependem de serviços públicos e internet; a rota não verifica restrições específicas de caminhões.
+O QUE MUDA NA VERSÃO 0.9
+- Identificação da versão e chave de armazenamento atualizadas para v0.9.
+- Cache do service worker separado: calculadora-frete-v09-teste.
+- Mantém a proteção que bloqueia o cálculo do piso ANTT quando a carga selecionada não é Carga Geral, pois este pacote só tem coeficientes cadastrados para Carga Geral.
+- O faturamento continua desconsiderando o frete de retorno quando a situação estiver definida como retorno vazio.
+- O resumo compartilhado passa a indicar o valor de retorno efetivamente considerado no faturamento.
 
-Para publicar, substitua os arquivos no repositório de teste. Este pacote não foi publicado automaticamente.
-\n\nATUALIZAÇÃO LOCALIZAÇÃO ATUAL: foi adicionado ao seletor de mapa o botão “Usar minha localização atual”. Requer permissão de localização e conexão com a internet. A versão mantém a lista de veículos e os recursos deste pacote original. Ainda não foi testada em navegador real.\n
+LIMITAÇÃO IMPORTANTE
+Os coeficientes das outras categorias de carga ainda não estão cadastrados/verificados neste pacote. Não considere o piso ANTT validado para todas as cargas. Confirme a norma oficial vigente antes de usar o resultado em contratação.
+
+INSTALAÇÃO
+1. Envie estes cinco arquivos somente para o repositório Calculadora-frete-teste.
+2. Substitua os arquivos de mesmo nome e confirme em Commit changes.
+3. Aguarde a publicação do GitHub Pages e abra o site de teste.
+4. Não envie estes arquivos para o repositório de produção.
+
+TESTES
+- Carga Geral: conferir que o cálculo só aparece para combinações com coeficientes cadastrados.
+- Outra categoria de carga: deve informar que o piso não foi calculado, sem reutilizar coeficientes de Carga Geral.
+- Retorno vazio com valor digitado no frete de volta: o faturamento deve contar somente a ida.
+- Retorno carregado: o frete de volta informado deve entrar no faturamento.
+- Alterar distância, diesel, horas e frete: conferir lucro, custo/km, margem, meta de frete e resultado por hora.
