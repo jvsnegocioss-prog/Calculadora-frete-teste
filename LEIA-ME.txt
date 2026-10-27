@@ -1,24 +1,11 @@
-Calculadora de Frete — versão de teste com sugestões automáticas e limpeza de endereços
+CALCULADORA DE FRETE — ATUALIZAÇÃO DE BOTÕES INDIVIDUAIS
 
-Conteúdo:
-- index.html: calculadora e seletor de mapa.
-- manifest.webmanifest e ícones: instalação PWA.
-- sw.js: cache atualizado com novo identificador para evitar carregar a versão antiga.
+Alterações:
+1. Botão do mapa renomeado para “Escolher origem no mapa”.
+2. Botão de destino mantém “Escolher destino no mapa”.
+3. Campo renomeado para “Origem do frete”, com botão próprio “Limpar origem”.
+4. Campo renomeado para “Destino do frete”, com botão próprio “Limpar destino”.
 
-Novidades:
-- Sugestões automáticas de endereço após digitar pelo menos 3 caracteres.
-- Toque em uma sugestão para posicionar o mapa no local.
-- O botão “×” dentro do campo de busca apaga somente o texto digitado, sem limpar os endereços já selecionados.
-- O botão “Limpar partida e destino”, em Dados do frete, apaga os dois endereços selecionados para começar novamente.
-- “Buscar” continua disponível como alternativa.
-- A confirmação “OK — confirmar local” continua necessária.
+Cada botão apaga somente o endereço correspondente e preserva o outro. Os quilômetros continuam editáveis manualmente. O mapa e as distâncias automáticas dependem de serviços públicos e internet; a rota não verifica restrições específicas de caminhões.
 
-Como publicar:
-1. No repositório de teste do GitHub Pages, substitua os arquivos pelos deste pacote.
-2. Aguarde a publicação.
-3. Abra o site e teste em uma aba privada se o navegador continuar mostrando a versão antiga.
-
-Limitações:
-- Sugestões e mapa dependem de internet e de serviços públicos (Nominatim/OpenStreetMap/OSRM), sujeitos a limites e indisponibilidade.
-- O cálculo de rota é genérico e não considera restrições específicas para caminhões (altura, peso, largura, eixos, pontes ou vias proibidas).
-- O pacote foi verificado por sintaxe; não houve teste em navegador real.
+Para publicar, substitua os arquivos no repositório de teste. Este pacote não foi publicado automaticamente.
