@@ -65,11 +65,11 @@
 <option value="Carga Granel Pressurizada">Carga granel pressurizada</option>
 </select></div>
         <div class="field full"><label>Mapa da rota (opcional)</label>
-<div class="map-actions"><button type="button" class="map-btn" id="chooseOrigin">📍 Escolher partida no mapa</button>
-<button type="button" class="map-btn" id="chooseDestination">🏁 Escolher destino no mapa</button></div>
+<div class="map-actions"><button type="button" class="map-btn" id="chooseOrigin">📍 1. Escolher origem no mapa</button>
+<button type="button" class="map-btn" id="chooseDestination">🏁 2. Escolher destino no mapa</button></div>
 <p class="hint" id="mapStatus">Escolha e confirme a partida e o destino para estimar as distâncias. Você também pode preencher os quilômetros manualmente.</p>
-<div class="fields"><div class="field"><label for="originText">Partida selecionada</label><input id="originText" readonly placeholder="Nenhuma partida selecionada"></div>
-<div class="field"><label for="destinationText">Destino selecionado</label><input id="destinationText" readonly placeholder="Nenhum destino selecionado"></div></div><button type="button" class="btn2 clear-addresses" id="clearSelectedAddresses">Limpar partida e destino</button></div>
+<div class="fields"><div class="field"><label for="originText">3. Origem do frete</label><input id="originText" readonly placeholder="Nenhuma origem selecionada"><button type="button" class="btn2 clear-address" id="clearOriginAddress">✕ Limpar origem</button></div>
+<div class="field"><label for="destinationText">4. Destino do frete</label><input id="destinationText" readonly placeholder="Nenhum destino selecionado"><button type="button" class="btn2 clear-address" id="clearDestinationAddress">✕ Limpar destino</button></div></div></div>
 <div class="field"><label for="outKm">Distância de ida (km)</label><input id="outKm" type="number" min="0" step="1" value="800"></div>
         <div class="field"><label for="backKm">Distância de retorno (km)</label><input id="backKm" type="number" min="0" step="1" value="800"></div>
         <div class="field full"><label for="returnType">Situação do retorno</label><select id="returnType"><option value="empty">Vazio / sem frete de retorno</option><option value="loaded">Carregado com frete de retorno</option><option value="partial">Retorno parcial com frete</option></select><p class="hint" id="returnHint">O custo da distância de retorno é considerado mesmo sem faturamento de volta.</p></div>
@@ -368,12 +368,17 @@ v09MapEl("clearMapQuery").addEventListener("click",()=>{
  v09MapEl("mapQuery").focus();
 });
 v09UpdateQueryClear();
-v09MapEl("clearSelectedAddresses").addEventListener("click",()=>{
- v09OriginPoint=null;v09DestinationPoint=null;
- v09MapEl("originText").value="";v09MapEl("destinationText").value="";
- try{localStorage.removeItem(v09MapStorageKey);}catch(e){}
+v09MapEl("clearOriginAddress").addEventListener("click",()=>{
+ v09OriginPoint=null;
+ v09MapEl("originText").value="";
  v09SaveMapPoints();
- v09MapStatus("Partida e destino apagados. Escolha os locais novamente ou informe as distâncias manualmente.");
+ v09MapStatus("Origem apagada. O destino foi mantido. Escolha uma nova origem para recalcular a rota.");
+});
+v09MapEl("clearDestinationAddress").addEventListener("click",()=>{
+ v09DestinationPoint=null;
+ v09MapEl("destinationText").value="";
+ v09SaveMapPoints();
+ v09MapStatus("Destino apagado. A origem foi mantida. Escolha um novo destino para recalcular a rota.");
 });
 
 v09MapEl("mapQuery").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();v09SearchMapLocation();}});
