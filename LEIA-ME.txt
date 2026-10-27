@@ -26,7 +26,3 @@ INSTALAÇÃO / TESTE
 5. Teste também troca de veículo, salvamento e reabertura do app.
 
 Esta entrega contém arquivos preparados localmente. Ela não foi enviada ao GitHub nem publicada automaticamente.
-
-
-ATUALIZAÇÃO v1.3 — LOCALIZAÇÃO ATUAL
-No seletor do mapa, o botão ‘Usar minha localização atual’ tenta localizar o aparelho usando a permissão do navegador. Requer internet, HTTPS e autorização do usuário. Se a permissão for negada ou o GPS não estiver disponível, use a busca de endereço ou toque no mapa. A localização selecionada ainda precisa ser confirmada em ‘OK — confirmar local’.
