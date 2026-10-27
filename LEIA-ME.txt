@@ -1,14 +1,15 @@
-Calculadora de Frete — versão de teste com sugestões automáticas e limpeza de endereço
+Calculadora de Frete — versão de teste com sugestões automáticas e limpeza de endereços
 
 Conteúdo:
 - index.html: calculadora e seletor de mapa.
 - manifest.webmanifest e ícones: instalação PWA.
-- sw.js: cache atualizado.
+- sw.js: cache atualizado com novo identificador para evitar carregar a versão antiga.
 
 Novidades:
 - Sugestões automáticas de endereço após digitar pelo menos 3 caracteres.
 - Toque em uma sugestão para posicionar o mapa no local.
-- Botão “✕ Limpar” apaga o texto da busca e o ponto temporário escolhido para que seja possível pesquisar outro endereço.
+- O botão “×” dentro do campo de busca apaga somente o texto digitado, sem limpar os endereços já selecionados.
+- O botão “Limpar partida e destino”, em Dados do frete, apaga os dois endereços selecionados para começar novamente.
 - “Buscar” continua disponível como alternativa.
 - A confirmação “OK — confirmar local” continua necessária.
 

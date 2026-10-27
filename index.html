@@ -34,7 +34,7 @@
 .map-modal.open{display:flex!important}
 .map-dialog{background:#fff;border-radius:16px;padding:14px;width:min(760px,100%);max-height:94vh;overflow:auto}
 #routeMap{height:48vh;min-height:280px;border-radius:12px;border:1px solid #dce5ea;margin:10px 0}
-.map-search{display:flex;gap:8px}.map-search input{flex:1;min-width:0}
+.map-search{display:flex;gap:8px;align-items:center}.map-search input{flex:1;min-width:0;padding-right:42px}.map-query-wrap{position:relative;flex:1;min-width:0}.map-query-wrap input{width:100%}.map-query-x{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:30px;height:30px;padding:0;border-radius:50%;background:transparent;color:#526574;font-size:22px;line-height:1;display:none}.map-query-wrap.has-value .map-query-x{display:block}.clear-addresses{margin-top:10px;background:#e8eef2;color:#102a43;width:100%}
 </style>
 
 </head>
@@ -69,7 +69,7 @@
 <button type="button" class="map-btn" id="chooseDestination">🏁 Escolher destino no mapa</button></div>
 <p class="hint" id="mapStatus">Escolha e confirme a partida e o destino para estimar as distâncias. Você também pode preencher os quilômetros manualmente.</p>
 <div class="fields"><div class="field"><label for="originText">Partida selecionada</label><input id="originText" readonly placeholder="Nenhuma partida selecionada"></div>
-<div class="field"><label for="destinationText">Destino selecionado</label><input id="destinationText" readonly placeholder="Nenhum destino selecionado"></div></div></div>
+<div class="field"><label for="destinationText">Destino selecionado</label><input id="destinationText" readonly placeholder="Nenhum destino selecionado"></div></div><button type="button" class="btn2 clear-addresses" id="clearSelectedAddresses">Limpar partida e destino</button></div>
 <div class="field"><label for="outKm">Distância de ida (km)</label><input id="outKm" type="number" min="0" step="1" value="800"></div>
         <div class="field"><label for="backKm">Distância de retorno (km)</label><input id="backKm" type="number" min="0" step="1" value="800"></div>
         <div class="field full"><label for="returnType">Situação do retorno</label><select id="returnType"><option value="empty">Vazio / sem frete de retorno</option><option value="loaded">Carregado com frete de retorno</option><option value="partial">Retorno parcial com frete</option></select><p class="hint" id="returnHint">O custo da distância de retorno é considerado mesmo sem faturamento de volta.</p></div>
@@ -169,7 +169,7 @@
   <div class="map-dialog">
     <h2 id="mapTitle">Selecionar local</h2>
     <p class="map-note">Pesquise um endereço ou toque no mapa para marcar o ponto. Confirme antes de fechar.</p>
-    <div class="map-search-wrap"><div class="map-search"><input id="mapQuery" type="search" autocomplete="off" placeholder="Digite o endereço, cidade ou CEP"><button type="button" class="btn2" id="clearMapQuery" aria-label="Limpar endereço">✕ Limpar</button><button type="button" class="btn" id="searchMap">Buscar</button></div><div id="mapSuggestions" class="map-suggestions" role="listbox" aria-label="Sugestões de endereço"></div></div>
+    <div class="map-search-wrap"><div class="map-search"><div class="map-query-wrap" id="mapQueryWrap"><input id="mapQuery" type="search" autocomplete="off" placeholder="Digite o endereço, cidade ou CEP"><button type="button" class="map-query-x" id="clearMapQuery" aria-label="Apagar texto da busca">×</button></div><button type="button" class="btn" id="searchMap">Buscar</button></div><div id="mapSuggestions" class="map-suggestions" role="listbox" aria-label="Sugestões de endereço"></div></div>
     <div id="routeMap"></div>
     <p id="mapPicked" class="map-note">Nenhum ponto selecionado.</p>
     <div class="actions"><button type="button" class="btn" id="confirmMap">OK — confirmar local</button><button type="button" class="btn2" id="cancelMap">Cancelar</button></div>
@@ -177,7 +177,7 @@
   </div>
 </div>
 
-<footer>Calculadora de Frete • versão 0.7 • mapa com sugestões e limpeza • teste</footer>
+<footer>Calculadora de Frete • versão 0.7 • busca simplificada e limpeza de endereços • teste</footer>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
 const storageKey='calculadoraFreteConfigV07MapaTeste';
@@ -273,7 +273,7 @@ let v09MapInstance=null, v09MapMarker=null, v09MapMode="origin", v09PendingPoint
 let v09OriginPoint=null, v09DestinationPoint=null;
 const v09MapStorageKey="calculadoraFreteMapaV1";
 const v09MapEl=id=>document.getElementById(id);
-function v09MapStatus(message){const el=v09MapEl("v09MapStatus");if(el)el.textContent=message;}
+function v09MapStatus(message){const el=v09MapEl("mapStatus");if(el)el.textContent=message;}
 function v09InitRouteMap(){
  if(!window.L){v09MapStatus("Mapa indisponível. Preencha as distâncias manualmente.");return;}
  if(v09MapInstance){setTimeout(()=>v09MapInstance.invalidateSize(),100);return;}
@@ -358,16 +358,22 @@ const v09DestinationButton=v09MapEl("chooseDestination");
 if(v09OriginButton) v09OriginButton.addEventListener("click",()=>v09OpenMapPicker("origin"));
 if(v09DestinationButton) v09DestinationButton.addEventListener("click",()=>v09OpenMapPicker("destination"));
 v09MapEl("searchMap").addEventListener("click",v09SearchMapLocation);
+function v09UpdateQueryClear(){v09MapEl("mapQueryWrap").classList.toggle("has-value",!!v09MapEl("mapQuery").value);}
+v09MapEl("mapQuery").addEventListener("input",v09UpdateQueryClear);
 v09MapEl("clearMapQuery").addEventListener("click",()=>{
  if(v09SuggestTimer){clearTimeout(v09SuggestTimer);v09SuggestTimer=null;}
  if(v09SuggestController){v09SuggestController.abort();v09SuggestController=null;}
  v09LastSuggestQuery="";
- v09MapEl("mapQuery").value="";
- v09HideSuggestions();
- v09MapEl("mapPicked").textContent="Endereço limpo. Digite outro endereço ou toque no mapa.";
- if(v09MapMarker&&v09MapInstance){v09MapInstance.removeLayer(v09MapMarker);v09MapMarker=null;}
- v09PendingPoint=null;
+ v09MapEl("mapQuery").value="";v09UpdateQueryClear();v09HideSuggestions();
  v09MapEl("mapQuery").focus();
+});
+v09UpdateQueryClear();
+v09MapEl("clearSelectedAddresses").addEventListener("click",()=>{
+ v09OriginPoint=null;v09DestinationPoint=null;
+ v09MapEl("originText").value="";v09MapEl("destinationText").value="";
+ try{localStorage.removeItem(v09MapStorageKey);}catch(e){}
+ v09SaveMapPoints();
+ v09MapStatus("Partida e destino apagados. Escolha os locais novamente ou informe as distâncias manualmente.");
 });
 
 v09MapEl("mapQuery").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();v09SearchMapLocation();}});
